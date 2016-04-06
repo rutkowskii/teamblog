@@ -5,6 +5,7 @@ using FluentAssertions;
 using Machine.Specifications;
 using MongoDB.Driver;
 using Ninject;
+using Ploeh.AutoFixture;
 using TeamBlog.Db.Access;
 using TeamBlog.Dtos;
 using TeamBlog.MongoAccess;
@@ -17,18 +18,18 @@ namespace TeamBlog.Tests
     public class PostsDbTests
     {
         [Subject("querying posts")]
-        class when_post_query_is_completed
+        class when_post_query_is_completed : DbAccessTestBase
         {
             Given posts_inserted = () =>
             {
-                new CreateChannelCommand(TestKernel.Instance.Get<IMongoAdapter>(), "smieszki-channel").Run();
+                Fixture.Create<CreateChannelCommandBuilder>().Build("smieszki-channel");
                 InsertPost("abc", "aaa");
                 InsertPost("xyz", "zzz");
             };
 
             When query_run_is_completed = () =>
             {
-                Actual = new GetLatestChannelPostsQuery(TestKernel.Adapter, getChannelId()).Run();
+                Actual = Fixture.Create<GetLatestChannelPostsQueryBuilder>().Build(getChannelId()).Run();
             };
             Then proper_posts_should_be_returned = () =>
             {
@@ -40,8 +41,8 @@ namespace TeamBlog.Tests
 
             static void InsertPost(string url, string description)
             {
-
-                new InsertPostCommand(TestKernel.Adapter, getChannelId(), url, description, Guid.Empty)
+                Fixture.Create<InsertPostCommandBuilder>()
+                    .Build(getChannelId(), url, description, Guid.Empty)
                     .Run();
             }
 

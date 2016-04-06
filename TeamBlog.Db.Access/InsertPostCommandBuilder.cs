@@ -12,9 +12,9 @@ namespace TeamBlog.Db.Access
             _mongoAdapter = mongoAdapter;
         }
 
-        public InsertPostCommand Build(Guid channelId, string url, string description, Guid userId)
+        public InsertNewPostCommand Build(Guid channelId, string url, string description, Guid userId)
         {
-            return new InsertPostCommand(_mongoAdapter, channelId, url, description, userId);
+            return new InsertNewPostCommand(_mongoAdapter, channelId, url, description, userId);
         }
     }
 }

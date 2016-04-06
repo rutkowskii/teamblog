@@ -4,7 +4,7 @@ using TeamBlog.MongoAccess;
 
 namespace TeamBlog.Db.Access
 {
-    public class InsertPostCommand: ICommand
+    public class InsertNewPostCommand: ICommand<InsertNewPostCommandResult>
     {
         private readonly IMongoAdapter _mongoAdapter;
         private readonly Guid _channelId;
@@ -12,7 +12,7 @@ namespace TeamBlog.Db.Access
         private readonly string _description;
         private readonly Guid _userId;
 
-        public InsertPostCommand(IMongoAdapter mongoAdapter, Guid channelId, string url, string description, Guid userId)
+        public InsertNewPostCommand(IMongoAdapter mongoAdapter, Guid channelId, string url, string description, Guid userId)
         {
             _mongoAdapter = mongoAdapter;
             _channelId = channelId;
@@ -21,7 +21,7 @@ namespace TeamBlog.Db.Access
             _userId = userId;
         }
 
-        public void Run()
+        public InsertNewPostCommandResult Run()
         {
             var newPostId = Guid.NewGuid();
             var insertionTime = DateTime.Now;
@@ -41,6 +41,18 @@ namespace TeamBlog.Db.Access
                 InsertionTime = insertionTime,
                 PostId = newPostId
             });
+
+            //todo not setting our Url
+            return new InsertNewPostCommandResult
+            {
+                NewPostId = newPostId
+            };
         }
+    }
+
+    public class InsertNewPostCommandResult
+    {
+        public Guid NewPostId { get; set; }
+        public string OurUrl { get; set; }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{88B95F74-8F56-4317-A341-16E8B75773C5}</ProjectGuid>
+    <ProjectGuid>{3AD26DED-FE46-4DE5-9EF5-4A02B7139355}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TeamBlog.Model</RootNamespace>
-    <AssemblyName>TeamBlog.Model</AssemblyName>
+    <RootNamespace>TeamBlog.Bus</RootNamespace>
+    <AssemblyName>TeamBlog.Bus</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,17 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Channel.cs" />
-    <Compile Include="ChannelPost.cs" />
-    <Compile Include="Post.cs" />
-    <Compile Include="PostNotification.cs" />
+    <Compile Include="PostAddedBusMsg.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TeamBlog.Bus\TeamBlog.Bus.csproj">
-      <Project>{3AD26DED-FE46-4DE5-9EF5-4A02B7139355}</Project>
-      <Name>TeamBlog.Bus</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

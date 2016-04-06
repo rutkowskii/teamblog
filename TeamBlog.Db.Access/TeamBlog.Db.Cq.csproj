@@ -42,6 +42,10 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.2.3\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChannelSubscribeCommand.cs" />
+    <Compile Include="ChannelUnsubscribeCommand.cs" />
     <Compile Include="CreateChannelCommand.cs" />
     <Compile Include="CreateChannelCommandBuilder.cs" />
     <Compile Include="GetLatestChannelPostsQuery.cs" />
@@ -60,6 +66,8 @@
     <Compile Include="InsertPostCommand.cs" />
     <Compile Include="InsertPostCommandBuilder.cs" />
     <Compile Include="IQuery.cs" />
+    <Compile Include="AddInsertPostNotificationCommand.cs" />
+    <Compile Include="NotifyForInsertPostCommandBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +82,10 @@
     <ProjectReference Include="..\TeamBlog.MongoAccess\TeamBlog.MongoAccess.csproj">
       <Project>{bc4ac5af-0964-4e59-a8df-86dbfe855e7b}</Project>
       <Name>TeamBlog.MongoAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.RedisAccess\TeamBlog.RedisAccess.csproj">
+      <Project>{d6df241e-6c1e-44f1-8d97-6adf9ade7f2c}</Project>
+      <Name>TeamBlog.RedisAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

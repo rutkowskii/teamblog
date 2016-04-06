@@ -4,4 +4,9 @@
     {
         void Run();
     }
+
+    public interface ICommand<TRes>
+    {
+        TRes Run();
+    }
 }

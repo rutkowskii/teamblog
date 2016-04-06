@@ -13,17 +13,18 @@ using TeamBlog.MongoAccess;
 using Given = Machine.Specifications.Establish;
 using When = Machine.Specifications.Because;
 using Then = Machine.Specifications.It;
+using Ploeh.AutoFixture;
 
 namespace TeamBlog.Tests
 {
     public class ChannelsDbTests
     {
         [Subject("creating channels")]
-        class when_create_channel_command_run_is_completed
+        class when_create_channel_command_run_is_completed : DbAccessTestBase
         {
             When command_run_is_completed = () =>
             {
-                var cmd = new CreateChannelCommand(TestKernel.Instance.Get<IMongoAdapter>(), "smieszki-channel");
+                var cmd = Fixture.Create<CreateChannelCommandBuilder>().Build("smieszki-channel");
                 cmd.Run();
             };
             Then new_channel_should_exist = () =>
@@ -33,6 +34,17 @@ namespace TeamBlog.Tests
                     .ToList();
                 actual.Should().HaveCount(1);
             };
+        }
+    }
+
+    public class DbAccessTestBase
+    {
+        static protected IFixture Fixture;
+
+        static DbAccessTestBase()
+        {
+            Fixture = new Fixture();
+            Fixture.Register<IMongoAdapter>(() => TestKernel.Adapter);
         }
     }
 }
