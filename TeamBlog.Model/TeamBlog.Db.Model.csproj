@@ -43,6 +43,7 @@
     <Compile Include="Channel.cs" />
     <Compile Include="ChannelPost.cs" />
     <Compile Include="Post.cs" />
+    <Compile Include="PostAddedUserNotification.cs" />
     <Compile Include="PostNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

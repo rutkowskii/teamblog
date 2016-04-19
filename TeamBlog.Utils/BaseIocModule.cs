@@ -12,5 +12,10 @@ namespace TeamBlog.Utils
         {
             Bind<T1>().To<T2>().InTransientScope();
         }
+
+        public void BindSingleton<T1, T2>() where T2 : T1
+        {
+            Bind<T1>().To<T2>().InSingletonScope();
+        }
     }
 }

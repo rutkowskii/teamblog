@@ -4,6 +4,6 @@ namespace TeamBlog.Db.Access
 {
     public interface IQuery<T>
     {
-        IEnumerable<T> Run();
+        IEnumerable<T> Run(); //todo obsolete?
     }
 }

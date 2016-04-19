@@ -11,6 +11,9 @@ namespace TeamBlog.NotificationsCreator
         static void Main(string[] args)
         {
             //todo http://looselycoupledlabs.com/2014/06/masstransit-publish-subscribe-example/
+            /*
+            register for a message and write down the notifications to REDIS. 
+    */
         }
     }
 }

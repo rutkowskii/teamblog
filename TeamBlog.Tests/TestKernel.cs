@@ -4,6 +4,7 @@ using Machine.Specifications;
 using Ninject;
 using Ninject.Modules;
 using TeamBlog.MongoAccess;
+using TeamBlog.RedisAccess;
 
 namespace TeamBlog.Tests
 {
@@ -22,14 +23,18 @@ namespace TeamBlog.Tests
             }
         }
 
-        public static IMongoAdapter Adapter
+        public static IMongoAdapter MongoAdapter
         {
             get { return Instance.Get<IMongoAdapter>(); }
         }
 
         private static IEnumerable<INinjectModule> Modules
         {
-            get { yield return new MongoAccessIocModule(); }
+            get
+            {
+                yield return new MongoAccessIocModule();
+                yield return new RedisAccessIocModule();
+            }
         } 
     }
 }

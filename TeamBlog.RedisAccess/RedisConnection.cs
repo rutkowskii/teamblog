@@ -14,21 +14,23 @@ namespace TeamBlog.RedisAccess
     {
         private ConnectionMultiplexer _redis;
 
-        public RedisConnection(string connectionString)
+        private const string ConnectionString = "127.0.0.1:6379,allowAdmin=true";
+
+        public RedisConnection()
         {
-            _redis = ConnectionMultiplexer.Connect(connectionString);
+            _redis = ConnectionMultiplexer.Connect(ConnectionString); //todo connection string ioc. 
         }
 
         public IDatabase AccessRedis()
         {
-            var db = _redis.GetDatabase();
+            var db = _redis.GetDatabase(1); //todo 1 goes to ioc
             return db;
         }
-    }
 
-    public interface IRedisConnection
-    {
-        IDatabase AccessRedis();
+        public void Flush()
+        {
+            var server = _redis.GetServer("127.0.0.1", 6379);
+            server.FlushDatabase(1);
+        }
     }
-    
 }

@@ -22,7 +22,7 @@ namespace TeamBlog.Tests
         {
             Given posts_inserted = () =>
             {
-                Fixture.Create<CreateChannelCommandBuilder>().Build("smieszki-channel");
+                Fixture.Create<CreateChannelCommandBuilder>().Build("smieszki-channel").Run();
                 InsertPost("abc", "aaa");
                 InsertPost("xyz", "zzz");
             };
@@ -48,7 +48,7 @@ namespace TeamBlog.Tests
 
             static Guid getChannelId()
             {
-                return TestKernel.Adapter.ChannelCollection.AsQueryable()
+                return TestKernel.MongoAdapter.ChannelCollection.AsQueryable()
                   .Where(ch => ch.Name == "smieszki-channel")
                   .Select(ch => ch.Id)
                   .First();

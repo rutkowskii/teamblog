@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using FluentAssertions;
 using Machine.Specifications;
 using MongoDB.Driver;
-using Ninject;
 using TeamBlog.Db.Access;
-using TeamBlog.Model;
 using TeamBlog.MongoAccess;
 using Given = Machine.Specifications.Establish;
 using When = Machine.Specifications.Because;
@@ -24,12 +18,13 @@ namespace TeamBlog.Tests
         {
             When command_run_is_completed = () =>
             {
+                //todo use kernel instead of the fixture. 
                 var cmd = Fixture.Create<CreateChannelCommandBuilder>().Build("smieszki-channel");
                 cmd.Run();
             };
             Then new_channel_should_exist = () =>
             {
-                var actual = TestKernel.Adapter.ChannelCollection.AsQueryable()
+                var actual = TestKernel.MongoAdapter.ChannelCollection.AsQueryable()
                     .Where(ch => ch.Name == "smieszki-channel")
                     .ToList();
                 actual.Should().HaveCount(1);
@@ -44,7 +39,7 @@ namespace TeamBlog.Tests
         static DbAccessTestBase()
         {
             Fixture = new Fixture();
-            Fixture.Register<IMongoAdapter>(() => TestKernel.Adapter);
+            Fixture.Register<IMongoAdapter>(() => TestKernel.MongoAdapter);
         }
     }
 }

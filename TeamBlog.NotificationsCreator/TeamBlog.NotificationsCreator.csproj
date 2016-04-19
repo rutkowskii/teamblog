@@ -33,6 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MassTransit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\MassTransit.3.2.4\lib\net45\MassTransit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NewId, Version=2.1.3.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewId.2.1.3\lib\net45\NewId.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,11 +55,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NotifyForInsertPostCommandBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TeamBlog.Bus\TeamBlog.Bus.csproj">
+      <Project>{3AD26DED-FE46-4DE5-9EF5-4A02B7139355}</Project>
+      <Name>TeamBlog.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.Db.Access\TeamBlog.Db.Cq.csproj">
+      <Project>{1FB2457E-9963-41E5-AACC-CCF54A6BF0E4}</Project>
+      <Name>TeamBlog.Db.Cq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.Dtos\TeamBlog.Dtos.csproj">
+      <Project>{9F9F25B5-8517-4266-98A0-098C4FC9D320}</Project>
+      <Name>TeamBlog.Dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.Model\TeamBlog.Db.Model.csproj">
+      <Project>{88B95F74-8F56-4317-A341-16E8B75773C5}</Project>
+      <Name>TeamBlog.Db.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.RedisAccess\TeamBlog.RedisAccess.csproj">
+      <Project>{D6DF241E-6C1E-44F1-8D97-6ADF9ADE7F2C}</Project>
+      <Name>TeamBlog.RedisAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

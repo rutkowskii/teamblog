@@ -56,19 +56,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChannelSubscribeCommand.cs" />
-    <Compile Include="ChannelUnsubscribeCommand.cs" />
-    <Compile Include="CreateChannelCommand.cs" />
-    <Compile Include="CreateChannelCommandBuilder.cs" />
-    <Compile Include="GetLatestChannelPostsQuery.cs" />
-    <Compile Include="GetLatestChannelPostsQueryBuilder.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="InsertPostCommand.cs" />
-    <Compile Include="InsertPostCommandBuilder.cs" />
+    <Compile Include="Commands\AddInsertPostNotificationCommandBuilder.cs" />
+    <Compile Include="Commands\ChannelSubscribeCommand.cs" />
+    <Compile Include="Commands\ChannelSubscribeCommandBuilder.cs" />
+    <Compile Include="Commands\ChannelUnsubscribeCommand.cs" />
+    <Compile Include="Commands\ChannelUnsubscribeCommandBuilder.cs" />
+    <Compile Include="Commands\CreateChannelCommand.cs" />
+    <Compile Include="Commands\CreateChannelCommandBuilder.cs" />
+    <Compile Include="Queries\GetChannelSubscribersQuery.cs" />
+    <Compile Include="Queries\GetChannelSubscribersQueryBuilder.cs" />
+    <Compile Include="Queries\GetLatestChannelPostsQuery.cs" />
+    <Compile Include="Queries\GetLatestChannelPostsQueryBuilder.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\InsertPostCommand.cs" />
+    <Compile Include="Commands\InsertPostCommandBuilder.cs" />
     <Compile Include="IQuery.cs" />
-    <Compile Include="AddInsertPostNotificationCommand.cs" />
-    <Compile Include="NotifyForInsertPostCommandBuilder.cs" />
+    <Compile Include="Commands\AddInsertPostNotificationCommand.cs" />
+    <Compile Include="PostAddedUserNotificationBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetUserNotificationsQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBlog.Dtos\TeamBlog.Dtos.csproj">

@@ -11,7 +11,7 @@ namespace TeamBlog.Services
     {
         private readonly IUserSessionProvider _userSessionProvider;
         private readonly InsertPostCommandBuilder _insertPostCommandBuilder;
-        private readonly NotifyForInsertPostCommandBuilder _notifyForInsertPostCommandBuilder;
+      //  private readonly NotifyForInsertPostCommandBuilder _notifyForInsertPostCommandBuilder;
 
         // todo ctor
 
@@ -21,7 +21,7 @@ namespace TeamBlog.Services
             var postInsertionResult = _insertPostCommandBuilder
                 .Build(channelId, url, description, currentSession.UserId)
                 .Run();
-            _notifyForInsertPostCommandBuilder //todo build the cmd using the previous cmd results. 
+         //   _notifyForInsertPostCommandBuilder //todo build the cmd using the previous cmd results. 
         }
 
      
