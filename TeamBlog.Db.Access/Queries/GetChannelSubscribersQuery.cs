@@ -8,7 +8,17 @@ using TeamBlog.RedisAccess;
 
 namespace TeamBlog.Db.Access.Queries
 {
-    public class GetChannelSubscribersQuery
+    //todo start from here. 
+    /*
+        things i need to start playing with angular:
+        channelsbyuser query 
+        get posts from my channels ---->todo now it is taken from mongo, later change to redis. 
+
+        //adding post. 
+
+    */
+
+    public class GetChannelSubscribersQuery : IQuery<RedisValue>
     {
         private readonly IRedisConnection _redisConnection;
         private readonly Guid _channelId;

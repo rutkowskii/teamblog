@@ -18,18 +18,18 @@ namespace TeamBlog.Tests
     public class PostsDbTests
     {
         [Subject("querying posts")]
-        class when_post_query_is_completed : DbAccessTestBase
+        class when_post_query_is_completed : TestBase
         {
             Given posts_inserted = () =>
             {
-                Fixture.Create<CreateChannelCommandBuilder>().Build("smieszki-channel").Run();
+                ResolveFromKernel<CreateChannelCommandBuilder>().Build("smieszki-channel").Run();
                 InsertPost("abc", "aaa");
                 InsertPost("xyz", "zzz");
             };
 
             When query_run_is_completed = () =>
             {
-                Actual = Fixture.Create<GetLatestChannelPostsQueryBuilder>().Build(getChannelId()).Run();
+                Actual = ResolveFromKernel<GetLatestChannelPostsQueryBuilder>().Build(getChannelId()).Run();
             };
             Then proper_posts_should_be_returned = () =>
             {
@@ -41,7 +41,7 @@ namespace TeamBlog.Tests
 
             static void InsertPost(string url, string description)
             {
-                Fixture.Create<InsertPostCommandBuilder>()
+                ResolveFromKernel<InsertPostCommandBuilder>()
                     .Build(getChannelId(), url, description, Guid.Empty)
                     .Run();
             }

@@ -12,18 +12,18 @@ namespace TeamBlog.RedisAccess
     /// </summary>
     public class RedisConnection : IRedisConnection
     {
-        private ConnectionMultiplexer _redis;
+        private readonly IRedisConnectionParamsProvider _connectionParamsProvider;
+        private readonly ConnectionMultiplexer _redis;
 
-        private const string ConnectionString = "127.0.0.1:6379,allowAdmin=true";
-
-        public RedisConnection()
+        public RedisConnection(IRedisConnectionParamsProvider connectionParamsProvider)
         {
-            _redis = ConnectionMultiplexer.Connect(ConnectionString); //todo connection string ioc. 
+            _connectionParamsProvider = connectionParamsProvider;
+            _redis = ConnectionMultiplexer.Connect(_connectionParamsProvider.ConnectionString);
         }
 
         public IDatabase AccessRedis()
         {
-            var db = _redis.GetDatabase(1); //todo 1 goes to ioc
+            var db = _redis.GetDatabase(_connectionParamsProvider.DatabaseNumber); 
             return db;
         }
 

@@ -6,6 +6,7 @@ namespace TeamBlog.RedisAccess
     {
         public override void Load()
         {
+            BindTransient<IRedisConnectionParamsProvider, TestsRedisConnectionParamsProvider>();
             BindSingleton<IRedisConnection, RedisConnection>();
         }
     }

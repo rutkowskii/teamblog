@@ -63,6 +63,7 @@
     <Compile Include="BaseIocModule.cs" />
     <Compile Include="BaseMapper.cs" />
     <Compile Include="MongoCollectionExtensions.cs" />
+    <Compile Include="PagingParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

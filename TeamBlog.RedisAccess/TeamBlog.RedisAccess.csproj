@@ -49,10 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRedisConnection.cs" />
+    <Compile Include="IRedisConnectionParamsProvider.cs" />
     <Compile Include="RedisAccessIocModule.cs" />
     <Compile Include="RedisConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedisDbObjects.cs" />
+    <Compile Include="TestsRedisConnectionParamsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

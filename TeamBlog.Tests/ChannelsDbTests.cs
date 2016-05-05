@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Machine.Specifications;
 using MongoDB.Driver;
+using Ninject;
 using TeamBlog.Db.Access;
 using TeamBlog.MongoAccess;
 using Given = Machine.Specifications.Establish;
@@ -14,17 +15,17 @@ namespace TeamBlog.Tests
     public class ChannelsDbTests
     {
         [Subject("creating channels")]
-        class when_create_channel_command_run_is_completed : DbAccessTestBase
+        class when_create_channel_command_run_is_completed : TestBase
         {
             When command_run_is_completed = () =>
             {
-                //todo use kernel instead of the fixture. 
-                var cmd = Fixture.Create<CreateChannelCommandBuilder>().Build("smieszki-channel");
+                var cmdBuilder = ResolveFromKernel<CreateChannelCommandBuilder>();
+                var cmd = cmdBuilder.Build("smieszki-channel");
                 cmd.Run();
             };
             Then new_channel_should_exist = () =>
             {
-                var actual = TestKernel.MongoAdapter.ChannelCollection.AsQueryable()
+                var actual = MongoAdapter.ChannelCollection.AsQueryable()
                     .Where(ch => ch.Name == "smieszki-channel")
                     .ToList();
                 actual.Should().HaveCount(1);
@@ -32,14 +33,24 @@ namespace TeamBlog.Tests
         }
     }
 
-    public class DbAccessTestBase
+    public class TestBase
     {
-        static protected IFixture Fixture;
-
-        static DbAccessTestBase()
+        protected static T ResolveFromKernel<T>()
         {
-            Fixture = new Fixture();
-            Fixture.Register<IMongoAdapter>(() => TestKernel.MongoAdapter);
+            return TestKernel.Instance.Get<T>();
+        }
+
+        protected static IMongoAdapter MongoAdapter
+        {
+            get { return ResolveFromKernel<MongoAdapter>(); }
+        }
+
+        protected static IFixture Fixture
+        {
+            get
+            {
+                return new Fixture();
+            }
         }
     }
 }

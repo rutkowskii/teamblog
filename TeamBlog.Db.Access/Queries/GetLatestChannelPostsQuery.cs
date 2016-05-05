@@ -32,7 +32,7 @@ namespace TeamBlog.Db.Access
                 .ToList()
                 .ToDictionary(p => p.Id, p => p);
             return postIds
-                .Select(id => postsByIds[id]) //todo would putting mappers inside the queries be a good idea?
+                .Select(id => postsByIds[id])
                 .Select(post => new PostDto
                 {
                     Author = "dummy",
