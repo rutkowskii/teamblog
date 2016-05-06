@@ -29,8 +29,8 @@ namespace TeamBlog.RedisAccess
 
         public void Flush()
         {
-            var server = _redis.GetServer("127.0.0.1", 6379);
-            server.FlushDatabase(1);
+            var server = _redis.GetServer(_connectionParamsProvider.ServerUrl, _connectionParamsProvider.ServerPort);
+            server.FlushDatabase(_connectionParamsProvider.DatabaseNumber);
         }
     }
 }

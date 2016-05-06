@@ -32,11 +32,33 @@ namespace TeamBlog.Db.Access.Queries
             var userNotificationsKey = RedisDbObjects.UserNotificationsKey(_userId);
             var userMaxScoreKey = RedisDbObjects.UserNotificationsNextElementKey(_userId);
 
-            //todo PAGING and common redis logic 
-            var maxScore = long.Parse(_redisDb.StringGet(userMaxScoreKey));
-            var notificationIds = _redisDb.SortedSetRangeByScore(userNotificationsKey);
+            var userMaxScore = _redisDb.StringGet(userMaxScoreKey);
+            if (userMaxScore.IsNullOrEmpty)
+            {
+                return Enumerable.Empty<PostAddedUserNotification>();
+            }
+            var maxScore = long.Parse(userMaxScore);
+            var notificationIds = ResolveNotificationIds(userNotificationsKey);
             var results = ReadNotifications(notificationIds).ToArray();
             return results;
+        }
+
+        //todo common paging logic. 
+        private RedisValue[] ResolveNotificationIds(string userNotificationsKey)
+        {
+            RedisValue[] notificationIds;
+            if (_pagingParams.TakesAll)
+            {
+                notificationIds = _redisDb.SortedSetRangeByScore(userNotificationsKey, order: Order.Descending);
+            }
+            else
+            {
+                notificationIds = _redisDb.SortedSetRangeByScore(userNotificationsKey,
+                    order: Order.Descending,
+                    skip: _pagingParams.Index,
+                    take: _pagingParams.Count);
+            }
+            return notificationIds;
         }
 
         private IEnumerable<PostAddedUserNotification> ReadNotifications(RedisValue[] notificationIds)
@@ -44,7 +66,7 @@ namespace TeamBlog.Db.Access.Queries
             foreach (var notificationId in notificationIds)
             {
                 var notificationData = _redisDb.HashGet(RedisDbObjects.NotificationsKey(notificationId),
-                    new RedisValue[] {"Timestamp", "Content"});
+                    new RedisValue[] {"Timestamp", "Content"}); //todo better way to deal with hash fields. 
                 yield return new PostAddedUserNotification
                 {
                     Id = Guid.Parse(notificationId),

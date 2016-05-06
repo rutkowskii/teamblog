@@ -8,5 +8,15 @@
         {
             get { return "127.0.0.1:6379,allowAdmin=true"; }
         }
+
+        public string ServerUrl
+        {
+            get { return "127.0.0.1"; }
+        }
+
+        public int ServerPort
+        {
+            get { return 6379; }
+        }
     }
 }

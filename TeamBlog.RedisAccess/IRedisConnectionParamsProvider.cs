@@ -4,5 +4,7 @@ namespace TeamBlog.RedisAccess
     {
         int DatabaseNumber { get; }
         string ConnectionString { get; }
+        int ServerPort { get; }
+        string ServerUrl { get; }
     }
 }

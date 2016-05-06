@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using System.Globalization;
+using StackExchange.Redis;
 using TeamBlog.Db.Access.Queries;
 using TeamBlog.Dtos;
 using TeamBlog.Model;
@@ -55,7 +56,7 @@ namespace TeamBlog.Db.Access
             //todo reflction based code creating hash entries from a dto. 
             var hashEntries = new[]
             {
-                new HashEntry("Timestamp", dbNotification.Timestamp.ToShortTimeString()),
+                new HashEntry("Timestamp", dbNotification.Timestamp.ToString(DateTimeFormatInfo.InvariantInfo)),
                 new HashEntry("Content", dbNotification.Content)
             };
             _redisDb.HashSet(RedisDbObjects.NotificationsKey(dbNotification.Id), hashEntries);
