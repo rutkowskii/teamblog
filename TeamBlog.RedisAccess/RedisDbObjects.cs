@@ -5,7 +5,6 @@ namespace TeamBlog.RedisAccess
         private static readonly string KeySpecialChar = ":";
         private const string ChannelSubscribers = "channel.subscribers";
         private const string UserNotifications = "user.notifications";
-        private const string UserNotificationsNextElement = "user.notifications.nextElement";
         private const string Notifications = "notifications";
 
         public static string ChannelSubscribersKey(object channelId)
@@ -20,7 +19,12 @@ namespace TeamBlog.RedisAccess
 
         public static string UserNotificationsNextElementKey(object userId)
         {
-            return CreateKey(UserNotificationsNextElement, userId.ToString());
+            return CreateKeyForNextElement(UserNotifications, userId.ToString());
+        }
+
+        private static string CreateKeyForNextElement(string identifier, string value)
+        {
+            return CreateKey(identifier + ".nextElement", value);
         }
 
         public static string NotificationsKey(object notificationId)

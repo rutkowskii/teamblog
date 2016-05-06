@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using StackExchange.Redis;
 using TeamBlog.Model;
 using TeamBlog.RedisAccess;
+using TeamBlog.RedisAccess.Collections;
+using TeamBlog.RedisAccess.Collections.SortedSet;
 using TeamBlog.Utils;
 
 namespace TeamBlog.Db.Access.Queries
@@ -17,12 +19,14 @@ namespace TeamBlog.Db.Access.Queries
         private readonly IRedisConnection _redisConnection;
         private readonly PagingParams _pagingParams;
         private readonly Guid _userId;
+        private readonly SortedSetReaderBuilder _sortedSetReaderBuilder;
 
-        public GetUserNotificationsQuery(IRedisConnection redisConnection, PagingParams pagingParams, Guid userId)
+        public GetUserNotificationsQuery(IRedisConnection redisConnection, PagingParams pagingParams, Guid userId, SortedSetReaderBuilder sortedSetReaderBuilder)
         {
             _redisConnection = redisConnection;
             _pagingParams = pagingParams;
             _userId = userId;
+            _sortedSetReaderBuilder = sortedSetReaderBuilder;
         }
 
         public IEnumerable<PostAddedUserNotification> Run()
@@ -30,34 +34,15 @@ namespace TeamBlog.Db.Access.Queries
             _redisDb = _redisConnection.AccessRedis();
 
             var userNotificationsKey = RedisDbObjects.UserNotificationsKey(_userId);
-            var userMaxScoreKey = RedisDbObjects.UserNotificationsNextElementKey(_userId);
-
-            var userMaxScore = _redisDb.StringGet(userMaxScoreKey);
-            if (userMaxScore.IsNullOrEmpty)
-            {
-                return Enumerable.Empty<PostAddedUserNotification>();
-            }
-            var maxScore = long.Parse(userMaxScore);
             var notificationIds = ResolveNotificationIds(userNotificationsKey);
             var results = ReadNotifications(notificationIds).ToArray();
             return results;
         }
 
-        //todo common paging logic. 
         private RedisValue[] ResolveNotificationIds(string userNotificationsKey)
         {
-            RedisValue[] notificationIds;
-            if (_pagingParams.TakesAll)
-            {
-                notificationIds = _redisDb.SortedSetRangeByScore(userNotificationsKey, order: Order.Descending);
-            }
-            else
-            {
-                notificationIds = _redisDb.SortedSetRangeByScore(userNotificationsKey,
-                    order: Order.Descending,
-                    skip: _pagingParams.Index,
-                    take: _pagingParams.Count);
-            }
+            var accesor = _sortedSetReaderBuilder.Build(userNotificationsKey, Order.Descending, _pagingParams);
+            var notificationIds = accesor.Resolve();
             return notificationIds;
         }
 

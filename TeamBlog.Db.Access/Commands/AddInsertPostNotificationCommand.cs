@@ -4,6 +4,7 @@ using TeamBlog.Db.Access.Queries;
 using TeamBlog.Dtos;
 using TeamBlog.Model;
 using TeamBlog.RedisAccess;
+using TeamBlog.RedisAccess.Collections.SortedSet;
 
 namespace TeamBlog.Db.Access
 {
@@ -14,15 +15,18 @@ namespace TeamBlog.Db.Access
         private readonly PostAddedUserNotificationBuilder _notificationBuilder;
         private readonly GetChannelSubscribersQueryBuilder _getChannelSubscribersQueryBuilder;
         private IDatabase _redisDb;
+        private readonly SortedSetWriterBuilder _sortedSetWriterBuilder;
 
         public AddInsertPostNotificationCommand(IRedisConnection redisConnection, PostAddedDto postAddedDto,
             PostAddedUserNotificationBuilder notificationBuilder,
-            GetChannelSubscribersQueryBuilder getChannelSubscribersQueryBuilder)
+            GetChannelSubscribersQueryBuilder getChannelSubscribersQueryBuilder, 
+            SortedSetWriterBuilder sortedSetWriterBuilder)
         {
             _redisConnection = redisConnection;
             _postAddedDto = postAddedDto;
             _notificationBuilder = notificationBuilder;
             _getChannelSubscribersQueryBuilder = getChannelSubscribersQueryBuilder;
+            _sortedSetWriterBuilder = sortedSetWriterBuilder;
         }
 
         public void Run()
@@ -44,11 +48,9 @@ namespace TeamBlog.Db.Access
         private void AddNotificationForUser(RedisValue subscriber, PostAddedUserNotification newNotification)
         {
             var userId = (string) subscriber;
-            var newNotificationScore =
-                _redisDb.StringIncrement(RedisDbObjects.UserNotificationsNextElementKey(userId), 1L);
-
-            _redisDb.SortedSetAdd(RedisDbObjects.UserNotificationsKey(userId), newNotification.Id.ToString(),
-                newNotificationScore);
+            var nextElementKey = RedisDbObjects.UserNotificationsNextElementKey(userId);
+            var sortedSetKey = RedisDbObjects.UserNotificationsKey(userId);
+            _sortedSetWriterBuilder.Build(nextElementKey, sortedSetKey).Append(newNotification.Id.ToString());
         }
 
         private void InsertNotification(PostAddedUserNotification dbNotification)

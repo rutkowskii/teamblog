@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\Hash\HashReader.cs" />
+    <Compile Include="Collections\RedisAccessorBase.cs" />
+    <Compile Include="Collections\SortedSet\SortedSetReader.cs" />
+    <Compile Include="Collections\SortedSet\SortedSetReaderBuilder.cs" />
+    <Compile Include="Collections\SortedSet\SortedSetWriter.cs" />
+    <Compile Include="Collections\SortedSet\SortedSetWriterBuilder.cs" />
     <Compile Include="IRedisConnection.cs" />
     <Compile Include="IRedisConnectionParamsProvider.cs" />
     <Compile Include="RedisAccessIocModule.cs" />
