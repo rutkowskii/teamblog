@@ -49,6 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\Hash\HashReader.cs" />
+    <Compile Include="Collections\Hash\HashReaderBuilder.cs" />
+    <Compile Include="Collections\Hash\HashWriter.cs" />
+    <Compile Include="Collections\Hash\HashWriterBuilder.cs" />
+    <Compile Include="Collections\Hash\IRedisHashDeserializer.cs" />
+    <Compile Include="Collections\Hash\IRedisHashSerializer.cs" />
     <Compile Include="Collections\RedisAccessorBase.cs" />
     <Compile Include="Collections\SortedSet\SortedSetReader.cs" />
     <Compile Include="Collections\SortedSet\SortedSetReaderBuilder.cs" />

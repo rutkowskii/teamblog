@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using StackExchange.Redis;
 using TeamBlog.Model;
 using TeamBlog.RedisAccess;
-using TeamBlog.RedisAccess.Collections;
+using TeamBlog.RedisAccess.Collections.Hash;
 using TeamBlog.RedisAccess.Collections.SortedSet;
 using TeamBlog.Utils;
 
@@ -15,24 +12,23 @@ namespace TeamBlog.Db.Access.Queries
 {
     public class GetUserNotificationsQuery : IQuery<PostAddedUserNotification>
     {
-        private IDatabase _redisDb;
-        private readonly IRedisConnection _redisConnection;
+        private readonly HashReaderBuilder<PostAddedUserNotification> _hashReaderBuilder;
         private readonly PagingParams _pagingParams;
         private readonly Guid _userId;
         private readonly SortedSetReaderBuilder _sortedSetReaderBuilder;
 
-        public GetUserNotificationsQuery(IRedisConnection redisConnection, PagingParams pagingParams, Guid userId, SortedSetReaderBuilder sortedSetReaderBuilder)
+        public GetUserNotificationsQuery(PagingParams pagingParams, Guid userId,
+            SortedSetReaderBuilder sortedSetReaderBuilder,
+            HashReaderBuilder<PostAddedUserNotification> hashReaderBuilder)
         {
-            _redisConnection = redisConnection;
             _pagingParams = pagingParams;
             _userId = userId;
             _sortedSetReaderBuilder = sortedSetReaderBuilder;
+            _hashReaderBuilder = hashReaderBuilder;
         }
 
         public IEnumerable<PostAddedUserNotification> Run()
         {
-            _redisDb = _redisConnection.AccessRedis();
-
             var userNotificationsKey = RedisDbObjects.UserNotificationsKey(_userId);
             var notificationIds = ResolveNotificationIds(userNotificationsKey);
             var results = ReadNotifications(notificationIds).ToArray();
@@ -50,14 +46,9 @@ namespace TeamBlog.Db.Access.Queries
         {
             foreach (var notificationId in notificationIds)
             {
-                var notificationData = _redisDb.HashGet(RedisDbObjects.NotificationsKey(notificationId),
-                    new RedisValue[] {"Timestamp", "Content"}); //todo better way to deal with hash fields. 
-                yield return new PostAddedUserNotification
-                {
-                    Id = Guid.Parse(notificationId),
-                    Timestamp = DateTime.Parse(notificationData[0]),
-                    Content = notificationData[1]
-                };
+                var hashIdentifier = RedisDbObjects.NotificationsKey(notificationId);
+                var reader = _hashReaderBuilder.Build(hashIdentifier);
+                yield return reader.Read();
             }
         }
     }

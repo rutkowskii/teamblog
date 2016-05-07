@@ -2,7 +2,7 @@ using System;
 using TeamBlog.Model;
 using TeamBlog.MongoAccess;
 
-namespace TeamBlog.Db.Access
+namespace TeamBlog.Db.Access.Commands
 {
     public class InsertNewPostCommand: ICommand<InsertNewPostCommandResult>
     {

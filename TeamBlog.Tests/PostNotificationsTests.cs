@@ -5,6 +5,7 @@ using FluentAssertions;
 using Machine.Specifications;
 using Ploeh.AutoFixture;
 using TeamBlog.Db.Access;
+using TeamBlog.Db.Access.Commands;
 using TeamBlog.Db.Access.Queries;
 using TeamBlog.Dtos;
 using TeamBlog.Model;

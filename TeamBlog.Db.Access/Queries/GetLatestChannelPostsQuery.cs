@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MongoDB.Driver;
 using TeamBlog.Dtos;
 using TeamBlog.MongoAccess;
 
-namespace TeamBlog.Db.Access
+namespace TeamBlog.Db.Access.Queries
 {
     public class GetLatestChannelPostsQuery : IQuery<PostDto>
     {

@@ -5,6 +5,7 @@ using FluentAssertions;
 using Machine.Specifications;
 using StackExchange.Redis;
 using TeamBlog.Db.Access;
+using TeamBlog.Db.Access.Commands;
 using TeamBlog.Db.Access.Queries;
 
 namespace TeamBlog.Tests

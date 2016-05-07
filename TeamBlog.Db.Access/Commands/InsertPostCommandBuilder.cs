@@ -1,7 +1,7 @@
 using System;
 using TeamBlog.MongoAccess;
 
-namespace TeamBlog.Db.Access
+namespace TeamBlog.Db.Access.Commands
 {
     public class InsertPostCommandBuilder
     {
@@ -17,4 +17,15 @@ namespace TeamBlog.Db.Access
             return new InsertNewPostCommand(_mongoAdapter, channelId, url, description, userId);
         }
     }
+
+    //public class NotificationRedisHashMapping : RedisHashMapping<PostAddedUserNotification>
+    //{
+    //    public NotificationRedisHashMapping()
+    //    {
+    //        Map(notf => notf.Content, "Content");
+    //        Map(notf => notf.Timestamp, "Content");
+    //    }
+    //}
+
+   
 }

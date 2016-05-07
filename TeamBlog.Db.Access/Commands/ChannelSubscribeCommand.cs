@@ -1,7 +1,7 @@
 ﻿using System;
 using TeamBlog.RedisAccess;
 
-namespace TeamBlog.Db.Access
+namespace TeamBlog.Db.Access.Commands
 {
     public class ChannelSubscribeCommand
     {

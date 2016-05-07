@@ -3,6 +3,7 @@ using System.Linq;
 using Machine.Specifications;
 using Ninject;
 using Ninject.Modules;
+using TeamBlog.Db.Access;
 using TeamBlog.MongoAccess;
 using TeamBlog.RedisAccess;
 
@@ -34,6 +35,7 @@ namespace TeamBlog.Tests
             {
                 yield return new MongoAccessIocModule();
                 yield return new RedisAccessIocModule();
+                yield return new CqIocModule();
             }
         } 
     }

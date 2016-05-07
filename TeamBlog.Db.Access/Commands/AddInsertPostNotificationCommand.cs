@@ -1,39 +1,36 @@
-﻿using System.Globalization;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using TeamBlog.Db.Access.Queries;
 using TeamBlog.Dtos;
 using TeamBlog.Model;
 using TeamBlog.RedisAccess;
+using TeamBlog.RedisAccess.Collections.Hash;
 using TeamBlog.RedisAccess.Collections.SortedSet;
 
-namespace TeamBlog.Db.Access
+namespace TeamBlog.Db.Access.Commands
 {
     public class AddInsertPostNotificationCommand
     {
-        private readonly IRedisConnection _redisConnection;
         private readonly PostAddedDto _postAddedDto;
         private readonly PostAddedUserNotificationBuilder _notificationBuilder;
         private readonly GetChannelSubscribersQueryBuilder _getChannelSubscribersQueryBuilder;
-        private IDatabase _redisDb;
         private readonly SortedSetWriterBuilder _sortedSetWriterBuilder;
+        private readonly HashWriterBuilder<PostAddedUserNotification> _hashWriterBuilder;
 
-        public AddInsertPostNotificationCommand(IRedisConnection redisConnection, PostAddedDto postAddedDto,
+        public AddInsertPostNotificationCommand(PostAddedDto postAddedDto,
             PostAddedUserNotificationBuilder notificationBuilder,
-            GetChannelSubscribersQueryBuilder getChannelSubscribersQueryBuilder, 
-            SortedSetWriterBuilder sortedSetWriterBuilder)
+            GetChannelSubscribersQueryBuilder getChannelSubscribersQueryBuilder,
+            SortedSetWriterBuilder sortedSetWriterBuilder, HashWriterBuilder<PostAddedUserNotification> hashWriterBuilder)
         {
-            _redisConnection = redisConnection;
             _postAddedDto = postAddedDto;
             _notificationBuilder = notificationBuilder;
             _getChannelSubscribersQueryBuilder = getChannelSubscribersQueryBuilder;
             _sortedSetWriterBuilder = sortedSetWriterBuilder;
+            _hashWriterBuilder = hashWriterBuilder;
         }
 
         public void Run()
         {
-            _redisDb = _redisConnection.AccessRedis();
             var subscribers = _getChannelSubscribersQueryBuilder.Build(_postAddedDto.ChannelId).Run();
-
             var dbNotification = _notificationBuilder.Build(_postAddedDto);
             InsertNotification(dbNotification);
 
@@ -41,8 +38,6 @@ namespace TeamBlog.Db.Access
             {
                 AddNotificationForUser(subscriber, dbNotification);
             }
-
-            //todo transaction?
         }
 
         private void AddNotificationForUser(RedisValue subscriber, PostAddedUserNotification newNotification)
@@ -55,13 +50,9 @@ namespace TeamBlog.Db.Access
 
         private void InsertNotification(PostAddedUserNotification dbNotification)
         {
-            //todo reflction based code creating hash entries from a dto. 
-            var hashEntries = new[]
-            {
-                new HashEntry("Timestamp", dbNotification.Timestamp.ToString(DateTimeFormatInfo.InvariantInfo)),
-                new HashEntry("Content", dbNotification.Content)
-            };
-            _redisDb.HashSet(RedisDbObjects.NotificationsKey(dbNotification.Id), hashEntries);
+            var hashIdentifier = RedisDbObjects.NotificationsKey(dbNotification.Id);
+            var hashWriter = _hashWriterBuilder.Build(hashIdentifier);
+            hashWriter.Write(dbNotification);
         }
     }
 }

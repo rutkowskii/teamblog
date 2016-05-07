@@ -7,6 +7,8 @@ using MongoDB.Driver;
 using Ninject;
 using Ploeh.AutoFixture;
 using TeamBlog.Db.Access;
+using TeamBlog.Db.Access.Commands;
+using TeamBlog.Db.Access.Queries;
 using TeamBlog.Dtos;
 using TeamBlog.MongoAccess;
 using Given = Machine.Specifications.Establish;

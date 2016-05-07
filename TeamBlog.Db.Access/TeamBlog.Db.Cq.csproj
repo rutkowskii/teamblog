@@ -42,6 +42,10 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.2.3\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
@@ -64,6 +68,8 @@
     <Compile Include="Commands\CreateChannelCommand.cs" />
     <Compile Include="Commands\CreateChannelCommandBuilder.cs" />
     <Compile Include="Commands\InsertNewPostCommandResult.cs" />
+    <Compile Include="Commands\PostAddedUserNotificationHashSerializer.cs" />
+    <Compile Include="CqIocModule.cs" />
     <Compile Include="Queries\GetChannelSubscribersQuery.cs" />
     <Compile Include="Queries\GetChannelSubscribersQueryBuilder.cs" />
     <Compile Include="Queries\GetLatestChannelPostsQuery.cs" />
@@ -77,6 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetUserNotificationsQuery.cs" />
     <Compile Include="Queries\GetUserNotificationsQueryBuilder.cs" />
+    <Compile Include="Queries\PostAddedUserNotificationDeserializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBlog.Dtos\TeamBlog.Dtos.csproj">

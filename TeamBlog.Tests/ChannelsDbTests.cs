@@ -9,6 +9,7 @@ using Given = Machine.Specifications.Establish;
 using When = Machine.Specifications.Because;
 using Then = Machine.Specifications.It;
 using Ploeh.AutoFixture;
+using TeamBlog.Db.Access.Commands;
 
 namespace TeamBlog.Tests
 {
