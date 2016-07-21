@@ -1,0 +1,29 @@
+﻿html *
+{
+   font-size: 1em !important;
+   color: #000 !important;
+   font-family: Arial !important;
+}
+
+#posts {
+    background: lime;
+    width: 600px;
+    min-height: 300px;
+    margin: auto
+}
+
+#top-panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    background: #ff00ff;
+    opacity: 0.9;
+}
+#top-panel div {
+    opacity: 1
+}
+
+.post { }
+
+body { }
