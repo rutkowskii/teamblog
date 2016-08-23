@@ -9,7 +9,22 @@
     background: lime;
     width: 600px;
     min-height: 300px;
-    margin: auto
+    margin: auto;
+    margin-top: 35px;
+}
+
+.post {
+    background: aqua;
+    width: 600px;
+    margin: 10px 0;
+}
+
+.post-title {
+    
+}
+
+.post-content {
+    
 }
 
 #top-panel {
@@ -21,7 +36,9 @@
     opacity: 0.9;
 }
 #top-panel div {
-    opacity: 1
+    opacity: 1;
+    margin: 5px 10px 10px 0;
+    float: right;
 }
 
 .post { }
