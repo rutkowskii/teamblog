@@ -9,33 +9,17 @@
         }
     ])
     .controller("posts", [
-        "$scope", function ($scope) {
+        "$scope", "$http", function ($scope, $http) {
             $scope.dummy = "aaaaaaaaaaaa";
-            $scope.posts = [
-                {
-                    timestamp: moment().add(-5, 'days'),
-                    content: 'content AAAAAAAAAA lorem ipsum lorem ipsum lorem ipsum lorem' +
-                        ' ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ' +
-                        'lorem ipsum ',
-                    addedBy: 'Piotr RUTEK Rutkowski',
-                    channel: 'misc'
-                },
-                {
-                    timestamp: moment().add(-3, 'days'),
-                    content: 'content BBBBBBBBBBBB lorem ipsum lorem ipsum lorem ipsum lorem' +
-                        ' ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ' +
-                        'lorem ipsum ',
-                    addedBy: 'Jan Kowalski',
-                    channel: 'dev general'
-                },
-                {
-                    timestamp: moment().add(-1, 'days'),
-                    content: 'content CCCCCC CCCCC CCCCCCCCCC lorem ipsum lorem ipsum lorem ipsum lorem' +
-                        ' ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ' +
-                        'lorem ipsum ',
-                    addedBy: 'Mariusz Nowak',
-                    channel: 'scrum masters'
-                }
-            ];
+            $scope.posts = [];
+
+            $http.get("api/posts", {}).then(function onSuccess(response) {
+                appendScopePosts(response);
+            });
+            var appendScopePosts = function (response) {
+                response.data.forEach(function(item) {
+                    $scope.posts.push(item);
+                });
+            };
         }
     ]);
