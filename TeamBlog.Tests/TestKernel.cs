@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Machine.Specifications;
+﻿using System.Linq;
 using Ninject;
-using Ninject.Modules;
-using TeamBlog.Db.Access;
 using TeamBlog.MongoAccess;
-using TeamBlog.RedisAccess;
 
 namespace TeamBlog.Tests
 {
@@ -18,7 +13,7 @@ namespace TeamBlog.Tests
             {
                 if (Kernel == null)
                 {
-                    Kernel = new StandardKernel(Modules.ToArray());
+                    Kernel = new StandardKernel(new WebappModulesProvider().Get().ToArray());
                 }
                 return Kernel;
             }
@@ -28,15 +23,4 @@ namespace TeamBlog.Tests
         {
             get { return Instance.Get<IMongoAdapter>(); }
         }
-
-        private static IEnumerable<INinjectModule> Modules
-        {
-            get
-            {
-                yield return new MongoAccessIocModule();
-                yield return new RedisAccessIocModule();
-                yield return new CqIocModule();
-            }
-        } 
-    }
 }

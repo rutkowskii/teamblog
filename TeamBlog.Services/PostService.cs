@@ -4,7 +4,7 @@ using TeamBlog.Db.Access.Commands;
 
 namespace TeamBlog.Services
 {
-    public class PostService
+    public class PostService // todo needed?
     {
         private readonly IUserSessionProvider _userSessionProvider;
         private readonly InsertPostCommandBuilder _insertPostCommandBuilder;

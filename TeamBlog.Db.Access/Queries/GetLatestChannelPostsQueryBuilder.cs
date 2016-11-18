@@ -12,9 +12,12 @@ namespace TeamBlog.Db.Access.Queries
             _adapter = adapter;
         }
 
-        public GetLatestChannelPostsQuery Build(Guid channelId)
+        public GetLatestChannelPostsQuery Build(Guid channelId) 
         {
             return new GetLatestChannelPostsQuery(_adapter, channelId);
         }
     }
+
+
+    //todo replace it with smart factories !!!!!!!!!!1
 }

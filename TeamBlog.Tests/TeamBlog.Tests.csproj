@@ -112,9 +112,17 @@
       <Project>{D6DF241E-6C1E-44F1-8D97-6ADF9ADE7F2C}</Project>
       <Name>TeamBlog.RedisAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.Services\TeamBlog.Bl.csproj">
+      <Project>{2A9EB8B8-D913-4B78-A682-5A31826A46E5}</Project>
+      <Name>TeamBlog.Bl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamBlog.Utils\TeamBlog.Utils.csproj">
       <Project>{51B647D2-70E8-4CE8-9698-E1529FF0BF2D}</Project>
       <Name>TeamBlog.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamBlog\TeamBlog.csproj">
+      <Project>{A42B5D9C-E988-4216-9C2C-DDF2B744A39E}</Project>
+      <Name>TeamBlog</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

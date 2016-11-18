@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture, Version=3.50.2.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.3.50.2\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlIocModule.cs" />
+    <Compile Include="IUser.cs" />
+    <Compile Include="IUserFactory.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="IUserSessionProvider.cs" />
     <Compile Include="PostService.cs" />
@@ -50,6 +61,17 @@
       <Project>{1fb2457e-9963-41e5-aacc-ccf54a6bf0e4}</Project>
       <Name>TeamBlog.Db.Cq</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.Dtos\TeamBlog.Dtos.csproj">
+      <Project>{9F9F25B5-8517-4266-98A0-098C4FC9D320}</Project>
+      <Name>TeamBlog.Dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.Utils\TeamBlog.Utils.csproj">
+      <Project>{51B647D2-70E8-4CE8-9698-E1529FF0BF2D}</Project>
+      <Name>TeamBlog.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
