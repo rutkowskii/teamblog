@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Ploeh.AutoFixture;
+﻿using Ploeh.AutoFixture;
+using System.Linq;
 using TeamBlog.Dtos;
 
 namespace TeamBlog.Services

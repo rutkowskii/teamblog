@@ -1,0 +1,39 @@
+﻿<md-dialog style="width:calc(75%);height:calc(75%);">
+    <!-- todo calcs are an ugly workaround -->
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>NEW POST</h2>
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    X
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column" width="75%">
+                <md-input-container style="width:calc(100% - 10px)">
+                    <label>Title</label>
+                    <input type="text" ng-model="newPost.title">
+                </md-input-container>
+
+                <md-input-container style="width:calc(100% - 10px)">
+                    <label>Content</label>
+                    <textarea ng-model="newPost.content"></textarea>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">
+                CANCEL
+            </md-button>
+            <md-button ng-click="confirm()">
+                ADD
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

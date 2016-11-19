@@ -7,4 +7,11 @@
         public string AddedBy { get; set; }
         public string Channel { get; set; }
     }
+
+    public class NewPostJsondto
+    {
+        //todo channel
+        public string Title { get; set; }
+        public string Content { get; set; }
+    }
 }

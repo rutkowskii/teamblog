@@ -4,29 +4,81 @@
 <head>
     <title>title</title>
 
-    <script src="@Url.Content("~/Scripts/angular.js")"></script>
-    <script src="@Url.Content("~/Scripts/moment.js")"></script>
-    <script src="@Url.Content("~/Scripts/angular-ui/ui-bootstrap.js")"></script>
-    <script src="@Url.Content("~/Scripts/my-app/root.js")"></script>
-    <link href="@Url.Content("~/Styles/main.css")" rel="stylesheet" type="text/css"/>
-</head>
-<body>
-<div>
-    <div id="top-panel" ng-controller="user-profile">
-        <div>Logged in as {{login}}</div>
-    </div>
-    <div id="posts" ng-controller="posts">
-        <div ng-repeat="post in posts">
-            <div class="post">
+    <link href="@Url.Content("~/Content/angular-material.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link href="@Url.Content("~/Styles/main.css")" rel="stylesheet" type="text/css" />
 
-                <div class="post-title">
-                    {{post.AddedBy}} on {{post.Timestamp}} in {{post.Channel}}
-                </div>
-                <div class="post-content">
-                    {{post.Content}}
-                </div>
+    <script type="text/javascript" src="@Url.Content("/Scripts/angular/angular.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/angular-animate/angular-animate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/angular-aria/angular-aria.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/angular-material/angular-material.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/root.js")"></script>
+</head>
+<body ng-cloak>
+<div>  
+    <div layout="column" layout-fill>
+        <md-toolbar>
+            <div class="md-toolbar-tools"  ng-controller="user-profile">
+                <span>Logged to TEAMBLOG as {{login}}</span>
+                <!-- fill up the space between left and right area -->
+                <span flex></span>
+                
+                    <!--a is a hack so the menu works -->
+                    <md-button class="md-fab md-mini" md-menu-origin
+                               ng-if="anyNotifications"
+                               ng-click="$mdOpenMenu($event)">
+                        {{notifications.length}}
+                        <md-tooltip md-direction="bottom">
+                            Show only unseen posts
+                        </md-tooltip>
+                    </md-button>
+                      
             </div>
-        </div>
+        </md-toolbar>
+        <md-content layout="column" layout-align="start center" ng-controller="posts">
+            <div ng-repeat="post in posts">
+                <md-card>
+                    <md-card-header>
+                        {{post.AddedBy}} on {{post.Timestamp}} in {{post.Channel}}
+                    </md-card-header>
+                    <md-card-content>
+                        {{post.Content}}
+                    </md-card-content>
+                </md-card>
+            </div>
+
+
+            <div ng-controller="new-posts">
+                <md-fab-speed-dial md-direction="up"
+                                   md-open="false"
+                                   class="md-fab-bottom-right md-scale">
+                    <md-fab-trigger>
+                        <md-button class="md-fab md-warn">
+                            +
+                        </md-button>
+                    </md-fab-trigger>
+
+                    <md-fab-actions>
+                        <md-button class="md-fab md-raised md-mini">
+                            A
+                            <md-tooltip md-direction="left">
+                                New link
+                            </md-tooltip>
+                        </md-button>
+                        <md-button class="md-fab md-raised md-mini" ng-click="showNewPostsDialog($event)">
+                            B
+                            <md-tooltip md-direction="left">
+                                New post
+                            </md-tooltip>
+                        </md-button>
+                        <md-button class="md-fab md-raised md-mini">
+                            C
+                        </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
+            </div>
+
+        </md-content>
     </div>
 </div>
 </body>

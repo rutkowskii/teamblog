@@ -26,5 +26,14 @@ namespace TeamBlog.Controllers
             var postsMapped = posts.Select(_postJsondtoMapper.Map).ToArray();
             return postsMapped;
         }
+
+
+        [HttpPost]
+        [Route(@"api/posts")]
+        public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
+        {
+            //todo implementation. 
+            return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
+        }
     }
 }

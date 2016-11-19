@@ -23,4 +23,5 @@ namespace TeamBlog.Tests
         {
             get { return Instance.Get<IMongoAdapter>(); }
         }
+    }
 }

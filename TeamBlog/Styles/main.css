@@ -1,8 +1,8 @@
 ﻿html *
 {
-   font-size: 1em !important;
-   color: #000 !important;
-   font-family: Arial !important;
+   /*font-size: 1em !important;*/
+   /*color: #000 !important;*/
+   /*font-family: Arial !important;*/
 }
 
 #posts {
@@ -27,12 +27,20 @@
     
 }
 
+.popover {
+  position: absolute;
+  z-index: 100;
+  background-color=#ffffff;
+}
+
 #top-panel {
     position: fixed;
     left: 0;
     top: 0;
     right: 0;
-    background: #ff00ff;
+    /*background: #ff00ff;*/
+    background-color: rgba(20,20,20,0.4); /* not supported by old IE */
+    color: greenyellow;
     opacity: 0.9;
 }
 #top-panel div {
@@ -43,4 +51,6 @@
 
 .post { }
 
-body { }
+body {
+    /*background-color: #165e10;*/
+}
