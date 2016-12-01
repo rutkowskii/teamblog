@@ -1,27 +1,29 @@
 ﻿using System.Linq;
 using Ninject;
 using TeamBlog.MongoAccess;
+using TeamBlog.RedisAccess;
+using TeamBlog.Utils;
 
 namespace TeamBlog.Tests
 {
     public class TestKernel
     {
-        private static IKernel Kernel;
-        public static IKernel Instance
+        private IKernel Kernel;
+        public IKernel Instance => this.Kernel ?? (this.Kernel = new StandardKernel(new WebappModulesProvider().Get().ToArray()));
+
+        public T Resolve<T>()
         {
-            get
-            {
-                if (Kernel == null)
-                {
-                    Kernel = new StandardKernel(new WebappModulesProvider().Get().ToArray());
-                }
-                return Kernel;
-            }
+            return Instance.Get<T>();
         }
 
-        public static IMongoAdapter MongoAdapter
+        public IMongoAdapter MongoAdapter => this.Instance.Get<IMongoAdapter>();
+
+        public void Flush()
         {
-            get { return Instance.Get<IMongoAdapter>(); }
+            MongoAdapter.ChannelCollection.Clear();
+            MongoAdapter.PostCollection.Clear();
+            MongoAdapter.ChannelPostCollection.Clear();
+            Instance.Get<IRedisConnection>().Flush();
         }
     }
 }
