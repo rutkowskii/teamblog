@@ -1,5 +1,6 @@
 ﻿using StackExchange.Redis;
 using TeamBlog.Db.Access.Queries;
+using TeamBlog.Db.Access.Queries.Subscriptions;
 using TeamBlog.Dtos;
 using TeamBlog.Model;
 using TeamBlog.RedisAccess;

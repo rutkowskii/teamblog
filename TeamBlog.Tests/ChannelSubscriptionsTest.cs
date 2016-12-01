@@ -5,6 +5,7 @@ using FluentAssertions;
 using StackExchange.Redis;
 using TeamBlog.Db.Access.Commands;
 using TeamBlog.Db.Access.Queries;
+using TeamBlog.Db.Access.Queries.Subscriptions;
 using Xbehave;
 
 namespace TeamBlog.Tests

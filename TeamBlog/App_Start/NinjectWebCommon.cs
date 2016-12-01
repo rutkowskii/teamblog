@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Web.Http;
 using Ninject.Web.WebApi;
+using TeamBlog.Utils;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(TeamBlog.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(TeamBlog.App_Start.NinjectWebCommon), "Stop")]
@@ -49,6 +50,7 @@ namespace TeamBlog.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
                 GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
+                Kernel = kernel;
                 return kernel;
             }
             catch
@@ -57,6 +59,7 @@ namespace TeamBlog.App_Start
                 throw;
             }
         }
-      
+        
+        public static IKernel Kernel { get; private set; } //todo quick n dirty
     }
 }

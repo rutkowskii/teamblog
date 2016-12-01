@@ -2,6 +2,14 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using MongoDB.Driver;
+using Ninject;
+using TeamBlog.App_Start;
+using TeamBlog.Db.Access.Commands.Channels;
+using TeamBlog.MongoAccess;
+using TeamBlog.RedisAccess;
+using TeamBlog.Bl;
+using TeamBlog.Utils;
 
 namespace TeamBlog
 {
@@ -14,20 +22,25 @@ namespace TeamBlog
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            InsertFakes();
         }
-    }
 
-    public static class WebApiConfig //todo rename, sep. file etc. 
-    {
-        public static void Register(HttpConfiguration config)
+        private void InsertFakes() //todo tmp
         {
-            config.MapHttpAttributeRoutes();
+            var K =  NinjectWebCommon.Kernel;
+            K.Get<IMongoAdapter>().ChannelCollection.Clear();
+            K.Get<IMongoAdapter>().PostCollection.Clear();
+            K.Get<IMongoAdapter>().ChannelPostCollection.Clear();
+            K.Get<IRedisConnection>().Flush();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+
+
+            K.Get<CreateChannelCommandBuilder>().Build("śmieszki");
+
+            var channelId = K.Get<IMongoAdapter>().ChannelCollection.AsQueryable().First().Id;
+
+            K.Get<IUserFactory>().GetCurrentUser().SubscribeToChannel(channelId);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Web.Http;
 using TeamBlog.Jsondtos;
 using TeamBlog.Jsondtos.Mapping;
-using TeamBlog.Services;
+using TeamBlog.Bl;
 
 namespace TeamBlog.Controllers
 {
@@ -22,7 +22,7 @@ namespace TeamBlog.Controllers
         [Route(@"api/posts")]
         public IEnumerable<PostJsondto> GetFeedPosts()
         {
-            var posts = _userFactory.GetCurrentUser().GetGeneralFeedPosts();
+            var posts = this.CurrentUser.GetGeneralFeedPosts();
             var postsMapped = posts.Select(_postJsondtoMapper.Map).ToArray();
             return postsMapped;
         }
@@ -33,7 +33,11 @@ namespace TeamBlog.Controllers
         public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
         {
             //todo implementation. 
+            // CurrentUser.AddPost();//todo mapping
+
             return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
         }
+
+        private IUser CurrentUser => this._userFactory.GetCurrentUser();
     }
 }

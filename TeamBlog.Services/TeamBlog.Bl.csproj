@@ -53,7 +53,6 @@
     <Compile Include="IUserFactory.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="IUserSessionProvider.cs" />
-    <Compile Include="PostService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

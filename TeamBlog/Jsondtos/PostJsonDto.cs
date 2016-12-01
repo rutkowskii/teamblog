@@ -1,4 +1,6 @@
-﻿namespace TeamBlog.Jsondtos
+﻿using System;
+
+namespace TeamBlog.Jsondtos
 {
     public class PostJsondto
     {
@@ -10,8 +12,8 @@
 
     public class NewPostJsondto
     {
-        //todo channel
         public string Title { get; set; }
         public string Content { get; set; }
+        public Guid[] Channels { get; set; }
     }
 }

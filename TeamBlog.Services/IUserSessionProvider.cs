@@ -1,4 +1,4 @@
-﻿namespace TeamBlog.Services
+﻿namespace TeamBlog.Bl
 {
     public interface IUserSessionProvider
     {

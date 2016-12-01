@@ -13,4 +13,11 @@ namespace TeamBlog.Dtos
         public string Url { get; set; }
         public string Description { get; set; }
     }
+
+    public class NewPostDto
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public Guid[] Channels { get; set; }
+    }
 }

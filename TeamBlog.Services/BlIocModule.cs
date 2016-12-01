@@ -1,6 +1,6 @@
 ﻿using TeamBlog.Utils;
 
-namespace TeamBlog.Services
+namespace TeamBlog.Bl
 {
     public class BlIocModule : BaseIocModule
     {
