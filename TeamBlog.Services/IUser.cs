@@ -20,9 +20,11 @@ namespace TeamBlog.Bl
 
         private readonly Guid _id = new Guid("668EA071-B0EE-4B1F-8FE4-4E95D4792FC8");
 
-        public User(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder)
+        public User(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder, 
+            InsertNewPostCommandBuilder insertNewPostCommandBuilder)
         {
             _channelSubscribeCommandBuilder = channelSubscribeCommandBuilder;
+            _insertNewPostCommandBuilder = insertNewPostCommandBuilder;
         }
 
         public PostDto[] GetGeneralFeedPosts()
@@ -43,8 +45,5 @@ namespace TeamBlog.Bl
 
             //todo what about notifications?
         }
-
-
-        //todo should the user add the post to the channel? probably..
     }
 }

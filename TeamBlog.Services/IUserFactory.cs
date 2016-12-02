@@ -10,15 +10,18 @@ namespace TeamBlog.Bl
     public class UserFactory : IUserFactory
     {
         private readonly ChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
+        private readonly InsertNewPostCommandBuilder _insertNewPostCommandBuilder;
 
-        public UserFactory(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder)
+        public UserFactory(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
+            InsertNewPostCommandBuilder insertNewPostCommandBuilder)
         {
-            this._channelSubscribeCommandBuilder = channelSubscribeCommandBuilder;
+            _channelSubscribeCommandBuilder = channelSubscribeCommandBuilder;
+            _insertNewPostCommandBuilder = insertNewPostCommandBuilder;
         }
 
         public IUser GetCurrentUser()
         {
-            return new User(_channelSubscribeCommandBuilder);
+            return new User(_channelSubscribeCommandBuilder, _insertNewPostCommandBuilder);
         }
     }
 }
