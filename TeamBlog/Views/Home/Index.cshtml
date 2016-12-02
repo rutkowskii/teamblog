@@ -8,10 +8,18 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link href="@Url.Content("~/Styles/main.css")" rel="stylesheet" type="text/css" />
 
+    
+    <script type="text/javascript" src="@Url.Content("/Scripts/jquery/jquery-1.6.4.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jquery-signalr/jquery.signalR-2.2.1.js")"></script>
+
     <script type="text/javascript" src="@Url.Content("/Scripts/angular/angular.js")"></script>
     <script type="text/javascript" src="@Url.Content("/Scripts/angular-animate/angular-animate.js")"></script>
     <script type="text/javascript" src="@Url.Content("/Scripts/angular-aria/angular-aria.js")"></script>
     <script type="text/javascript" src="@Url.Content("/Scripts/angular-material/angular-material.js")"></script>
+
+
+    @*<script src="@Url.Content("~/signalr/hubs.js")"></script>*@
+    <script src="~/signalr/hubs"></script>
     <script type="text/javascript" src="@Url.Content("/Scripts/root.js")"></script>
 </head>
 <body ng-cloak>
@@ -27,7 +35,7 @@
                     <md-button class="md-fab md-mini" md-menu-origin
                                ng-if="anyNotifications"
                                ng-click="$mdOpenMenu($event)">
-                        {{notifications.length}}
+                        {{notfsCount}}
                         <md-tooltip md-direction="bottom">
                             Show only unseen posts
                         </md-tooltip>

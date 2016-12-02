@@ -16,13 +16,23 @@
                 console.log("FUNCTION ANNOUNCE CLICK " + index);
             };
 
+            $scope.notfsCount = 0;
+
+            var signalrProxy = $.connection.notificationsHub;
+            signalrProxy.client.receiveNotifications = function (notfsCount) {
+                console.log('received from backend: ' + notfsCount);
+                $scope.notfsCount = notfsCount;
+                $scope.$apply();
+            };
+
+            $.connection.hub.start()
+                 .done(function () { console.log('Now connected, connection ID=' + $.connection.hub.id); })
+                 .fail(function () { console.log('Could not Connect!'); });
+            
+
             $scope.login = "ANON";
-            $scope.notifications = [
-                "notification a",
-                "notification b"
-            ];
-            $scope.notificationSelected = null;
-            $scope.anyNotifications = $scope.notifications.length > 0;
+            $scope.notifications = [];
+            $scope.anyNotifications = true;
         }
     ])
 

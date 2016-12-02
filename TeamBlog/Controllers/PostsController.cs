@@ -28,15 +28,15 @@ namespace TeamBlog.Controllers
         }
 
 
-        [HttpPost]
-        [Route(@"api/posts")]
-        public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
-        {
-            //todo implementation. 
-            // CurrentUser.AddPost();//todo mapping
+        //[HttpPost]
+        //[Route(@"api/posts")]
+        //public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
+        //{
+        //    //todo implementation. 
+        //    // CurrentUser.AddPost();//todo mapping
 
-            return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
-        }
+        //    return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
+        //}
 
         private IUser CurrentUser => this._userFactory.GetCurrentUser();
     }

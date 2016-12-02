@@ -24,6 +24,8 @@ namespace TeamBlog
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             InsertFakes();
+
+            RunServices();
         }
 
         private void InsertFakes() //todo tmp
@@ -42,5 +44,11 @@ namespace TeamBlog
 
             K.Get<IUserFactory>().GetCurrentUser().SubscribeToChannel(channelId);
         }
+
+        private void RunServices()
+        {
+            var backgroundTask = new BackgroundServerTimeTimer();
+        }
+
     }
 }
