@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using StackExchange.Redis;
 using TeamBlog.RedisAccess;
 
 namespace TeamBlog.Db.Access.Queries.Subscriptions
 {
-    //todo start from here. 
-    /*
-        things i need to start playing with angular:
-        channelsbyuser query 
-        get posts from my channels ---->todo now it is taken from mongo, later change to redis. 
-
-        //adding post. 
-
-    */
-
-    public class GetChannelSubscribersQuery : IQuery<RedisValue>
+    public class GetChannelSubscribersQuery : IQuery<RedisValue> //todo should queries expose redis values?
     {
         private readonly IRedisConnection _redisConnection;
         private readonly Guid _channelId;
@@ -24,16 +13,16 @@ namespace TeamBlog.Db.Access.Queries.Subscriptions
 
         public GetChannelSubscribersQuery(IRedisConnection redisConnection, Guid channelId)
         {
-            this._redisConnection = redisConnection;
-            this._channelId = channelId;
+            _redisConnection = redisConnection;
+            _channelId = channelId;
         }
 
-        public IEnumerable<RedisValue> Run()
+        public RedisValue[] Run()
         {
-            this._redisDb = this._redisConnection.AccessRedis();
-            var subscribers = this._redisDb
+            _redisDb = _redisConnection.AccessRedis();
+            var subscribers = _redisDb
                 .SetMembers(RedisDbObjects.ChannelSubscribersKey(this._channelId));
-            return subscribers.ToList();
+            return subscribers.ToArray();
         }
     }
 }

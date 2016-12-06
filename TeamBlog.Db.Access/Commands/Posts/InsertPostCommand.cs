@@ -17,8 +17,8 @@ namespace TeamBlog.Db.Access.Commands
         {
             _mongoAdapter = mongoAdapter;
             _channelIds = channelIds;
-            this._title = title;
-            this._content = content;
+            _title = title;
+            _content = content;
             _userId = userId;
         }
 

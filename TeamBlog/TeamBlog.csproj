@@ -188,13 +188,15 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Hubs\BackgroundServerTimeTimer.cs" />
+    <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Jsondtos\Mapping\PostJsondtoMapper.cs" />
     <Compile Include="Jsondtos\PostJsonDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup1.cs" />
+    <Compile Include="SignalRStartup.cs" />
     <Compile Include="Utils\WebappModulesProvider.cs" />
   </ItemGroup>
   <ItemGroup>

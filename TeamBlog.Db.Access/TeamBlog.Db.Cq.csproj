@@ -84,6 +84,8 @@
     <Compile Include="Queries\GetUserNotificationsQuery.cs" />
     <Compile Include="Queries\GetUserNotificationsQueryBuilder.cs" />
     <Compile Include="Queries\PostAddedUserNotificationDeserializer.cs" />
+    <Compile Include="Queries\Subscriptions\GetUserChannelsQuery.cs" />
+    <Compile Include="Queries\Subscriptions\GetUserChannelsQueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBlog.Dtos\TeamBlog.Dtos.csproj">

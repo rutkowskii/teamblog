@@ -3,43 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using MongoDB.Driver;
-using TeamBlog.Db.Access.Commands;
+using TeamBlog.Bl;
+using TeamBlog.Controllers;
 using TeamBlog.Db.Access.Commands.Channels;
-using TeamBlog.Db.Access.Queries;
-using TeamBlog.Dtos;
+using TeamBlog.Jsondtos;
 using Xbehave;
 
 namespace TeamBlog.Tests
 {
     public class PostsTest : TestBase
     {
-        private IEnumerable<PostDto> actualPosts;
+        private IEnumerable<PostJsondto> actualPosts;
         private const string ChannelName = "smieszki-channel";
 
         [Scenario]
         public void AddThenRetrievePosts()
         {
-            "GIVEN the channel is created".x(
-                () => { K.Resolve<CreateChannelCommandBuilder>().Build(ChannelName).Run(); });
+            //todo controllers in these 2 cases. 
+            "GIVEN the channel is created".x(() => { InsertChannel(); });
+
+            "and GIVEN the user is subscribed to the channel".x(
+              () => { K.Resolve<IUserFactory>().GetCurrentUser().SubscribeToChannel(ChannelId); });
 
             "and GIVEN the posts are inserted".x(() =>
             {
-                InsertPost("abc", "aaa");
-                InsertPost("xyz", "zzz");
+                InsertPost(title: "abc", content: "aaa");
+                InsertPost(title: "xyz", content: "zzz");
             });
 
-            "WHEN querying for the channel content".x(() =>
+            "WHEN querying for the user feed".x(() =>
             {
-                actualPosts = K.Resolve<GetLatestChannelsPostsQueryBuilder>()
-                    .Build(new[]{ChannelId})
-                    .Run();
+                actualPosts = K.Resolve<PostsController>()
+                    .GetFeedPosts();
             });
 
             "THEN proper posts should be returned".x(() =>
             {
-                actualPosts.Select(p => p.Description)
+                actualPosts
+                    .Select(p => p.Content)
                     .ShouldBeEquivalentTo(new[] {"zzz", "aaa"});
             });
+        }
+
+        private void InsertChannel()
+        {
+            this.K.Resolve<CreateChannelCommandBuilder>().Build(ChannelName).Run();
         }
 
         private Guid ChannelId => 
@@ -48,13 +56,15 @@ namespace TeamBlog.Tests
                 .Select(ch => ch.Id)
                 .First();
 
-        private void InsertPost(
-            string url,
-            string content)
+        private void InsertPost(string title, string content)
         {
-            K.Resolve<InsertNewPostCommandBuilder>()
-                .Build(new[] {ChannelId}, url, content, Guid.Empty) //todo user id. 
-                .Run();
+            var postsController = K.Resolve<PostsController>();
+            postsController.AddNewPost(new NewPostJsondto
+            {
+                Channels = new[] {ChannelId}, //todo object extensions 
+                Content = content,
+                Title = title
+            });
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Web.Http;
 using TeamBlog.Jsondtos;
 using TeamBlog.Jsondtos.Mapping;
 using TeamBlog.Bl;
+using TeamBlog.Dtos;
 
 namespace TeamBlog.Controllers
 {
@@ -22,22 +23,25 @@ namespace TeamBlog.Controllers
         [Route(@"api/posts")]
         public IEnumerable<PostJsondto> GetFeedPosts()
         {
-            var posts = this.CurrentUser.GetGeneralFeedPosts();
+            var posts = CurrentUser.GetGeneralFeedPosts();
             var postsMapped = posts.Select(_postJsondtoMapper.Map).ToArray();
             return postsMapped;
         }
 
+        [HttpPost]
+        [Route(@"api/posts")]
+        public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
+        {
+            CurrentUser.AddPost(new NewPostDto
+            {
+                Channels = newPost.Channels,
+                Content = newPost.Content,
+                Title = newPost.Title
+            }); //todo mapping
 
-        //[HttpPost]
-        //[Route(@"api/posts")]
-        //public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
-        //{
-        //    //todo implementation. 
-        //    // CurrentUser.AddPost();//todo mapping
+            return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
+        }
 
-        //    return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
-        //}
-
-        private IUser CurrentUser => this._userFactory.GetCurrentUser();
+        private IUser CurrentUser => _userFactory.GetCurrentUser();
     }
 }

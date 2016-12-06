@@ -5,11 +5,17 @@ namespace TeamBlog.RedisAccess
         private static readonly string KeySpecialChar = ":";
         private const string ChannelSubscribers = "channel.subscribers";
         private const string UserNotifications = "user.notifications";
+        private const string UserChannels = "user.channels";
         private const string Notifications = "notifications";
 
         public static string ChannelSubscribersKey(object channelId)
         {
             return CreateKey(ChannelSubscribers, channelId.ToString());
+        }
+
+        public static string UserChannelsKey(object userId) //todo refactor to more generic implementation
+        {
+            return CreateKey(UserChannels, userId.ToString());
         }
 
         public static string UserNotificationsKey(object userId)

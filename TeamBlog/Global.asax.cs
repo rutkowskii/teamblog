@@ -9,6 +9,8 @@ using TeamBlog.Db.Access.Commands.Channels;
 using TeamBlog.MongoAccess;
 using TeamBlog.RedisAccess;
 using TeamBlog.Bl;
+using TeamBlog.Dtos;
+using TeamBlog.Hubs;
 using TeamBlog.Utils;
 
 namespace TeamBlog
@@ -43,6 +45,7 @@ namespace TeamBlog
             var channelId = K.Get<IMongoAdapter>().ChannelCollection.AsQueryable().First().Id;
 
             K.Get<IUserFactory>().GetCurrentUser().SubscribeToChannel(channelId);
+            K.Get<IUserFactory>().GetCurrentUser().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
         }
 
         private void RunServices()

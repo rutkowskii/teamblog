@@ -27,7 +27,7 @@ namespace TeamBlog.Db.Access.Queries
             _hashReaderBuilder = hashReaderBuilder;
         }
 
-        public IEnumerable<PostAddedUserNotification> Run()
+        public PostAddedUserNotification[] Run()
         {
             var userNotificationsKey = RedisDbObjects.UserNotificationsKey(_userId);
             var notificationIds = ResolveNotificationIds(userNotificationsKey);

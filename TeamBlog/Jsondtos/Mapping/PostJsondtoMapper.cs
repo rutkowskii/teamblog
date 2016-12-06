@@ -13,7 +13,7 @@ namespace TeamBlog.Jsondtos.Mapping
             return new PostJsondto
             {
                 AddedBy = source.Author,
-                Channel = "DUMMY", //todo check later on, channels?
+                Channel = "DUMMY", //todo check later on, first of all, should be many channels..
                 Content = source.Description,
                 Timestamp = source.CreationDate.ToString()
             };

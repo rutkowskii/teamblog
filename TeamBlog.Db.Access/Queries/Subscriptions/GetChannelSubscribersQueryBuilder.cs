@@ -9,7 +9,7 @@ namespace TeamBlog.Db.Access.Queries.Subscriptions
 
         public GetChannelSubscribersQueryBuilder(IRedisConnection redisConnection)
         {
-            this._redisConnection = redisConnection;
+            _redisConnection = redisConnection;
         }
 
         public GetChannelSubscribersQuery Build(Guid channelId)

@@ -18,7 +18,7 @@ namespace TeamBlog.Db.Access.Queries
             this._channelIds = channelIds;
         }
 
-        public IEnumerable<PostDto> Run()
+        public PostDto[] Run()
         {
             var postIds = _adapter.ChannelPostCollection.AsQueryable()
                 .Where(chp => _channelIds.Contains(chp.ChannelId))
@@ -37,7 +37,8 @@ namespace TeamBlog.Db.Access.Queries
                     Url = post.Title,
                     Description = post.Content,
                     CreationDate = post.CreationDate
-                });
+                })
+                .ToArray();
         }
     }
 }
