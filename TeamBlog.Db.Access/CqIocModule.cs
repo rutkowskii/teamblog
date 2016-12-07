@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ninject.Extensions.Factory;
 using TeamBlog.Db.Access.Commands;
 using TeamBlog.Db.Access.Queries;
 using TeamBlog.Model;
@@ -17,6 +13,14 @@ namespace TeamBlog.Db.Access
         {
             BindTransient<IRedisHashSerializer<PostAddedUserNotification>, PostAddedUserNotificationHashSerializer>();
             BindTransient<IRedisHashDeserializer<PostAddedUserNotification>, PostAddedUserNotificationDeserializer>();
+
+            /*
+            todo seem we gonna need overwriting the default provider:
+            https://github.com/ninject/Ninject.Extensions.Factory/wiki/Factory-interface%3A-Referencing-Named-Bindings
+            */
+
+            Kernel.Bind<IInsertNewPostCommandBuilder>().ToFactory(() => new TypeMatchingArgumentInheritanceInstanceProvider());
+
         }
     }
 }

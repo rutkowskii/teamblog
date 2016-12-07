@@ -23,14 +23,14 @@ namespace TeamBlog.Bl
     public class User : IUser
     {
         private readonly ChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
-        private readonly InsertNewPostCommandBuilder _insertNewPostCommandBuilder;
+        private readonly IInsertNewPostCommandBuilder _insertNewPostCommandBuilder;
         private readonly GetUserChannelsQueryBuilder _userChannelsQueryBuilder;
         private readonly GetLatestChannelsPostsQueryBuilder _channelsPostsQueryBuilder;
 
         private readonly Guid _id = new Guid("668EA071-B0EE-4B1F-8FE4-4E95D4792FC8");
 
-        public User(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder, 
-            InsertNewPostCommandBuilder insertNewPostCommandBuilder,
+        public User(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
+            IInsertNewPostCommandBuilder insertNewPostCommandBuilder,
             GetUserChannelsQueryBuilder userChannelsQueryBuilder,
             GetLatestChannelsPostsQueryBuilder channelsPostsQueryBuilder)
         {

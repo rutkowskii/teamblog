@@ -12,12 +12,12 @@ namespace TeamBlog.Bl
     public class UserFactory : IUserFactory
     {
         private readonly ChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
-        private readonly InsertNewPostCommandBuilder _insertNewPostCommandBuilder;
+        private readonly IInsertNewPostCommandBuilder _insertNewPostCommandBuilder;
         private readonly GetUserChannelsQueryBuilder _userChannelsQueryBuilder;
         private readonly GetLatestChannelsPostsQueryBuilder _channelPostsQueryBuilder;
 
         public UserFactory(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
-            InsertNewPostCommandBuilder insertNewPostCommandBuilder,
+            IInsertNewPostCommandBuilder insertNewPostCommandBuilder,
             GetUserChannelsQueryBuilder userChannelsQueryBuilder,
             GetLatestChannelsPostsQueryBuilder channelPostsQueryBuilder)
         {

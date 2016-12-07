@@ -45,7 +45,6 @@ namespace TeamBlog.Db.Access.Commands
                 }
             ));
 
-            //todo not setting our Url
             return new InsertNewPostCommandResult
             {
                 NewPostId = newPostId
