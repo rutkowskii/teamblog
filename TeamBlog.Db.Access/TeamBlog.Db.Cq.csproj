@@ -69,22 +69,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddInsertPostNotificationCommandBuilder.cs" />
+    <Compile Include="Commands\Posts\IInsertNewPostCommandBuilder.cs" />
     <Compile Include="Commands\Subscriptions\ChannelSubscribeCommand.cs" />
-    <Compile Include="Commands\Subscriptions\ChannelSubscribeCommandBuilder.cs" />
+    <Compile Include="Commands\Subscriptions\IChannelSubscribeCommandBuilder.cs" />
+    <Compile Include="Commands\Subscriptions\ChannelSubscribeParams.cs" />
     <Compile Include="Commands\Subscriptions\ChannelUnsubscribeCommand.cs" />
-    <Compile Include="Commands\Subscriptions\ChannelUnsubscribeCommandBuilder.cs" />
+    <Compile Include="Commands\Subscriptions\IChannelUnsubscribeCommandBuilder.cs" />
     <Compile Include="Commands\Channels\CreateChannelCommand.cs" />
-    <Compile Include="Commands\Channels\CreateChannelCommandBuilder.cs" />
+    <Compile Include="Commands\Channels\ICreateChannelCommandBuilder.cs" />
     <Compile Include="Commands\Posts\InsertNewPostCommandResult.cs" />
     <Compile Include="Commands\PostAddedUserNotificationHashSerializer.cs" />
     <Compile Include="CqIocModule.cs" />
     <Compile Include="Queries\Subscriptions\GetChannelSubscribersQuery.cs" />
-    <Compile Include="Queries\Subscriptions\GetChannelSubscribersQueryBuilder.cs" />
+    <Compile Include="Queries\Subscriptions\IGetChannelSubscribersQueryBuilder.cs" />
     <Compile Include="Queries\Posts\GetLatestChannelsPostsQuery.cs" />
-    <Compile Include="Queries\Posts\GetLatestChannelsPostsQueryBuilder.cs" />
+    <Compile Include="Queries\Posts\IGetLatestChannelsPostsQueryBuilder.cs" />
     <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\Posts\InsertPostCommand.cs" />
-    <Compile Include="Commands\Posts\InsertNewPostCommandBuilder.cs" />
+    <Compile Include="Commands\Posts\InsertNewPostCommand.cs" />
+    <Compile Include="Commands\Posts\InsertNewPostParams.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="Commands\AddInsertPostNotificationCommand.cs" />
     <Compile Include="PostAddedUserNotificationBuilder.cs" />
@@ -93,7 +95,7 @@
     <Compile Include="Queries\GetUserNotificationsQueryBuilder.cs" />
     <Compile Include="Queries\PostAddedUserNotificationDeserializer.cs" />
     <Compile Include="Queries\Subscriptions\GetUserChannelsQuery.cs" />
-    <Compile Include="Queries\Subscriptions\GetUserChannelsQueryBuilder.cs" />
+    <Compile Include="Queries\Subscriptions\IGetUserChannelsQueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBlog.Dtos\TeamBlog.Dtos.csproj">

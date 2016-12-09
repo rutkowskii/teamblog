@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using StackExchange.Redis;
-using TeamBlog.Db.Access.Commands;
-using TeamBlog.Db.Access.Queries;
+using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries.Subscriptions;
 using Xbehave;
 
@@ -41,9 +40,7 @@ namespace TeamBlog.Tests
 
             "and GIVEN duplicate subscription inserted".x(() =>
             {
-                K.Resolve<ChannelSubscribeCommandBuilder>()
-                   .Build(_channelId, _subscriberId1)
-                   .Run();
+                SubscribeToChannel(_subscriberId1);
             });
 
             "WHEN querying for channel subscribers, THEN subsribers set should still be unique".x(() =>
@@ -62,8 +59,8 @@ namespace TeamBlog.Tests
 
             "WHEN user unsubsribes".x(() =>
             {
-                K.Resolve<ChannelUnsubscribeCommandBuilder>()
-                    .Build(_channelId, _subscriberId1)
+                K.Resolve<IChannelUnsubscribeCommandBuilder>()
+                    .Build(new ChannelSubscribeParams(channelId: _channelId, subscriberId: _subscriberId1))
                     .Run();
             });
 
@@ -84,9 +81,9 @@ namespace TeamBlog.Tests
 
         private void SubscribeToChannel(Guid subscriber)
         {
-            var commandBuilder = K.Resolve<ChannelSubscribeCommandBuilder>();
+            var commandBuilder = K.Resolve<IChannelSubscribeCommandBuilder>();
             commandBuilder
-                .Build(_channelId, subscriber)
+                .Build(new ChannelSubscribeParams(channelId: _channelId, subscriberId: subscriber))
                 .Run();
         }
 
@@ -94,11 +91,10 @@ namespace TeamBlog.Tests
             IEnumerable<Guid> expected)
         {
             var actualSubscribers = K
-                .Resolve<GetChannelSubscribersQueryBuilder>()
+                .Resolve<IGetChannelSubscribersQueryBuilder>()
                 .Build(_channelId)
                 .Run();
-            var expectedSubscribers = expected.Select(g => (RedisValue) g.ToString());
-            actualSubscribers.Should().BeEquivalentTo(expectedSubscribers);
+            actualSubscribers.Should().BeEquivalentTo(expected);
         }
     }
 }

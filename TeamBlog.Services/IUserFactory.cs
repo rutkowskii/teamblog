@@ -1,5 +1,8 @@
 ﻿using TeamBlog.Db.Access.Commands;
+using TeamBlog.Db.Access.Commands.Posts;
+using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries;
+using TeamBlog.Db.Access.Queries.Posts;
 using TeamBlog.Db.Access.Queries.Subscriptions;
 
 namespace TeamBlog.Bl
@@ -11,15 +14,15 @@ namespace TeamBlog.Bl
 
     public class UserFactory : IUserFactory
     {
-        private readonly ChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
+        private readonly IChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
         private readonly IInsertNewPostCommandBuilder _insertNewPostCommandBuilder;
-        private readonly GetUserChannelsQueryBuilder _userChannelsQueryBuilder;
-        private readonly GetLatestChannelsPostsQueryBuilder _channelPostsQueryBuilder;
+        private readonly IGetUserChannelsQueryBuilder _userChannelsQueryBuilder;
+        private readonly IGetLatestChannelsPostsQueryBuilder _channelPostsQueryBuilder;
 
-        public UserFactory(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
+        public UserFactory(IChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
             IInsertNewPostCommandBuilder insertNewPostCommandBuilder,
-            GetUserChannelsQueryBuilder userChannelsQueryBuilder,
-            GetLatestChannelsPostsQueryBuilder channelPostsQueryBuilder)
+            IGetUserChannelsQueryBuilder userChannelsQueryBuilder,
+            IGetLatestChannelsPostsQueryBuilder channelPostsQueryBuilder)
         {
             _channelSubscribeCommandBuilder = channelSubscribeCommandBuilder;
             _insertNewPostCommandBuilder = insertNewPostCommandBuilder;

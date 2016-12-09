@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using System;
+using StackExchange.Redis;
 using TeamBlog.Db.Access.Queries;
 using TeamBlog.Db.Access.Queries.Subscriptions;
 using TeamBlog.Dtos;
@@ -13,13 +14,13 @@ namespace TeamBlog.Db.Access.Commands
     {
         private readonly PostAddedDto _postAddedDto;
         private readonly PostAddedUserNotificationBuilder _notificationBuilder;
-        private readonly GetChannelSubscribersQueryBuilder _getChannelSubscribersQueryBuilder;
+        private readonly IGetChannelSubscribersQueryBuilder _getChannelSubscribersQueryBuilder;
         private readonly SortedSetWriterBuilder _sortedSetWriterBuilder;
         private readonly HashWriterBuilder<PostAddedUserNotification> _hashWriterBuilder;
 
         public AddInsertPostNotificationCommand(PostAddedDto postAddedDto,
             PostAddedUserNotificationBuilder notificationBuilder,
-            GetChannelSubscribersQueryBuilder getChannelSubscribersQueryBuilder,
+            IGetChannelSubscribersQueryBuilder getChannelSubscribersQueryBuilder,
             SortedSetWriterBuilder sortedSetWriterBuilder, HashWriterBuilder<PostAddedUserNotification> hashWriterBuilder)
         {
             _postAddedDto = postAddedDto;
@@ -41,9 +42,9 @@ namespace TeamBlog.Db.Access.Commands
             }
         }
 
-        private void AddNotificationForUser(RedisValue subscriber, PostAddedUserNotification newNotification)
+        private void AddNotificationForUser(Guid subscriber, PostAddedUserNotification newNotification)
         {
-            var userId = (string) subscriber;
+            var userId = subscriber.ToString();
             var nextElementKey = RedisDbObjects.UserNotificationsNextElementKey(userId);
             var sortedSetKey = RedisDbObjects.UserNotificationsKey(userId);
             _sortedSetWriterBuilder.Build(nextElementKey, sortedSetKey).Append(newNotification.Id.ToString());

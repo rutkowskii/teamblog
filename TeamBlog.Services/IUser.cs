@@ -1,9 +1,8 @@
 ﻿using System;
-using Ploeh.AutoFixture;
 using System.Linq;
-using StackExchange.Redis;
-using TeamBlog.Db.Access.Commands;
-using TeamBlog.Db.Access.Queries;
+using TeamBlog.Db.Access.Commands.Posts;
+using TeamBlog.Db.Access.Commands.Subscriptions;
+using TeamBlog.Db.Access.Queries.Posts;
 using TeamBlog.Db.Access.Queries.Subscriptions;
 using TeamBlog.Dtos;
 
@@ -22,17 +21,17 @@ namespace TeamBlog.Bl
 
     public class User : IUser
     {
-        private readonly ChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
+        private readonly IChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
         private readonly IInsertNewPostCommandBuilder _insertNewPostCommandBuilder;
-        private readonly GetUserChannelsQueryBuilder _userChannelsQueryBuilder;
-        private readonly GetLatestChannelsPostsQueryBuilder _channelsPostsQueryBuilder;
+        private readonly IGetUserChannelsQueryBuilder _userChannelsQueryBuilder;
+        private readonly IGetLatestChannelsPostsQueryBuilder _channelsPostsQueryBuilder;
 
         private readonly Guid _id = new Guid("668EA071-B0EE-4B1F-8FE4-4E95D4792FC8");
 
-        public User(ChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
+        public User(IChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
             IInsertNewPostCommandBuilder insertNewPostCommandBuilder,
-            GetUserChannelsQueryBuilder userChannelsQueryBuilder,
-            GetLatestChannelsPostsQueryBuilder channelsPostsQueryBuilder)
+            IGetUserChannelsQueryBuilder userChannelsQueryBuilder,
+            IGetLatestChannelsPostsQueryBuilder channelsPostsQueryBuilder)
         {
             _channelSubscribeCommandBuilder = channelSubscribeCommandBuilder;
             _insertNewPostCommandBuilder = insertNewPostCommandBuilder;
@@ -50,13 +49,13 @@ namespace TeamBlog.Bl
 
         public void SubscribeToChannel(Guid channelId)
         {
-            _channelSubscribeCommandBuilder.Build(channelId, _id).Run();
+            _channelSubscribeCommandBuilder.Build(new ChannelSubscribeParams(channelId, _id)).Run();
         }
 
         public void AddPost(NewPostDto newPostDto)
         {
             var cmd = _insertNewPostCommandBuilder
-                .Build(newPostDto.Channels, newPostDto.Content, newPostDto.Content, _id);
+                .Build(new InsertNewPostParams(newPostDto.Channels, newPostDto.Content, newPostDto.Content, _id));
             cmd.Run();
 
             //todo what about notifications?

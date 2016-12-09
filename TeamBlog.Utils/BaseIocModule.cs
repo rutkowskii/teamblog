@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ninject.Modules;
+﻿using Ninject.Modules;
+using Ninject.Extensions.Factory;
 
 namespace TeamBlog.Utils
 {
@@ -16,6 +13,11 @@ namespace TeamBlog.Utils
         public void BindSingleton<T1, T2>() where T2 : T1
         {
             Bind<T1>().To<T2>().InSingletonScope();
+        }
+
+        public void BindFactory<T>() where T : class
+        {
+            Bind<T>().ToFactory(() => new TypeMatchingArgumentInheritanceInstanceProvider());
         }
     }
 }

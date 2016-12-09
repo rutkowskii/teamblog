@@ -5,7 +5,7 @@ using TeamBlog.RedisAccess;
 
 namespace TeamBlog.Db.Access.Queries.Subscriptions
 {
-    public class GetChannelSubscribersQuery : IQuery<RedisValue> //todo should queries expose redis values?
+    public class GetChannelSubscribersQuery : IQuery<Guid>
     {
         private readonly IRedisConnection _redisConnection;
         private readonly Guid _channelId;
@@ -17,12 +17,19 @@ namespace TeamBlog.Db.Access.Queries.Subscriptions
             _channelId = channelId;
         }
 
-        public RedisValue[] Run()
+        public Guid[] Run()
         {
             _redisDb = _redisConnection.AccessRedis();
             var subscribers = _redisDb
-                .SetMembers(RedisDbObjects.ChannelSubscribersKey(this._channelId));
-            return subscribers.ToArray();
+                .SetMembers(RedisDbObjects.ChannelSubscribersKey(this._channelId))
+                .ToArray();
+
+            var subscribersParsed = subscribers
+                .Select(s => (string) s)
+                .Select(str => new Guid(str))
+                .ToArray();
+
+            return subscribersParsed;
         }
     }
 }

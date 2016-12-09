@@ -47,7 +47,7 @@ namespace TeamBlog.Tests
 
         private void InsertChannel()
         {
-            this.K.Resolve<CreateChannelCommandBuilder>().Build(ChannelName).Run();
+            K.Resolve<ICreateChannelCommandBuilder>().Build(ChannelName).Run();
         }
 
         private Guid ChannelId => 

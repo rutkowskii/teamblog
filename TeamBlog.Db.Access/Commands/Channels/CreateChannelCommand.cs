@@ -11,8 +11,8 @@ namespace TeamBlog.Db.Access.Commands.Channels
 
         public CreateChannelCommand(IMongoAdapter mongoAdapter, string name)
         {
-            this._mongoAdapter = mongoAdapter;
-            this._name = name;
+            _mongoAdapter = mongoAdapter;
+            _name = name;
         }
 
         public void Run()
@@ -22,7 +22,7 @@ namespace TeamBlog.Db.Access.Commands.Channels
                 Id = Guid.NewGuid(),
                 Name = this._name
             };
-            this._mongoAdapter.ChannelCollection.InsertOne(newChannel);
+            _mongoAdapter.ChannelCollection.InsertOne(newChannel);
         }
     }
 }

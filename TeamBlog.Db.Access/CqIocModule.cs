@@ -1,6 +1,10 @@
-﻿using Ninject.Extensions.Factory;
-using TeamBlog.Db.Access.Commands;
+﻿using TeamBlog.Db.Access.Commands;
+using TeamBlog.Db.Access.Commands.Channels;
+using TeamBlog.Db.Access.Commands.Posts;
+using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries;
+using TeamBlog.Db.Access.Queries.Posts;
+using TeamBlog.Db.Access.Queries.Subscriptions;
 using TeamBlog.Model;
 using TeamBlog.RedisAccess.Collections.Hash;
 using TeamBlog.Utils;
@@ -14,13 +18,16 @@ namespace TeamBlog.Db.Access
             BindTransient<IRedisHashSerializer<PostAddedUserNotification>, PostAddedUserNotificationHashSerializer>();
             BindTransient<IRedisHashDeserializer<PostAddedUserNotification>, PostAddedUserNotificationDeserializer>();
 
-            /*
-            todo seem we gonna need overwriting the default provider:
-            https://github.com/ninject/Ninject.Extensions.Factory/wiki/Factory-interface%3A-Referencing-Named-Bindings
-            */
+            BindFactory<IInsertNewPostCommandBuilder>();
+            BindFactory<IChannelSubscribeCommandBuilder>();
+            BindFactory<IChannelUnsubscribeCommandBuilder>();
+            BindFactory<ICreateChannelCommandBuilder>();
+            BindFactory<IAddInsertPostNotificationCommandBuilder>();
 
-            Kernel.Bind<IInsertNewPostCommandBuilder>().ToFactory(() => new TypeMatchingArgumentInheritanceInstanceProvider());
-
+            BindFactory<IGetChannelSubscribersQueryBuilder>();
+            BindFactory<IGetUserChannelsQueryBuilder>();
+            BindFactory<IGetLatestChannelsPostsQueryBuilder>();
         }
+
     }
 }

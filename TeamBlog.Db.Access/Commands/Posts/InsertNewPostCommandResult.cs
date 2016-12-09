@@ -1,6 +1,6 @@
 using System;
 
-namespace TeamBlog.Db.Access.Commands
+namespace TeamBlog.Db.Access.Commands.Posts
 {
     public class InsertNewPostCommandResult
     {

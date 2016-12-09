@@ -40,7 +40,7 @@ namespace TeamBlog
 
 
 
-            K.Get<CreateChannelCommandBuilder>().Build("śmieszki").Run();
+            K.Get<ICreateChannelCommandBuilder>().Build("śmieszki").Run();
 
             var channelId = K.Get<IMongoAdapter>().ChannelCollection.AsQueryable().First().Id;
 

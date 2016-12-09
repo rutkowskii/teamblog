@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TeamBlog.Db.Access.Commands;
+using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries;
 using TeamBlog.Model;
 using TeamBlog.Utils;
@@ -16,7 +17,7 @@ namespace TeamBlog.Tests
 
         public PostNotificationsTests()
         {
-            SubscribeUsersToChannel();
+            //SubscribeUsersToChannel();
         }
 
         [Scenario]
@@ -125,25 +126,25 @@ namespace TeamBlog.Tests
         //        .Run();
         //}
 
-        private void SubscribeUsersToChannel()
-        {
-            var subscribeCmdBuilder = K.Resolve<ChannelSubscribeCommandBuilder>();
-            subscribeCmdBuilder.Build(ChannelId, Subscriber1).Run();
-            subscribeCmdBuilder.Build(ChannelId, Subscriber2).Run();
-        }
-
-        private IEnumerable<PostAddedUserNotification> GetNotificationsForUser(Guid userId)
-        {
-            var queryBuilder = K.Resolve<GetUserNotificationsQueryBuilder>();
-            var actualSubscriber1 = queryBuilder.Build(userId).Run();
-            return actualSubscriber1;
-        }
-
-        private IEnumerable<PostAddedUserNotification> GetNotificationsForUser(Guid userId, PagingParams pagingParams)
-        {
-            var queryBuilder = K.Resolve<GetUserNotificationsQueryBuilder>();
-            var actualSubscriber1 = queryBuilder.Build(pagingParams, userId).Run();
-            return actualSubscriber1;
-        }
+//        private void SubscribeUsersToChannel()
+//        {
+//            var subscribeCmdBuilder = K.Resolve<ChannelSubscribeCommandBuilder>();
+//            subscribeCmdBuilder.Build(ChannelId, Subscriber1).Run();
+//            subscribeCmdBuilder.Build(ChannelId, Subscriber2).Run();
+//        }
+//
+//        private IEnumerable<PostAddedUserNotification> GetNotificationsForUser(Guid userId)
+//        {
+//            var queryBuilder = K.Resolve<GetUserNotificationsQueryBuilder>();
+//            var actualSubscriber1 = queryBuilder.Build(userId).Run();
+//            return actualSubscriber1;
+//        }
+//
+//        private IEnumerable<PostAddedUserNotification> GetNotificationsForUser(Guid userId, PagingParams pagingParams)
+//        {
+//            var queryBuilder = K.Resolve<GetUserNotificationsQueryBuilder>();
+//            var actualSubscriber1 = queryBuilder.Build(pagingParams, userId).Run();
+//            return actualSubscriber1;
+//        }
     }
 }

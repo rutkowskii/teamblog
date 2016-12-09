@@ -1,7 +1,7 @@
 ﻿using System;
 using TeamBlog.RedisAccess;
 
-namespace TeamBlog.Db.Access.Commands
+namespace TeamBlog.Db.Access.Commands.Subscriptions
 {
     public class ChannelSubscribeCommand
     {
@@ -9,11 +9,11 @@ namespace TeamBlog.Db.Access.Commands
         private readonly Guid _channelId;
         private readonly Guid _subscriberId;
 
-        public ChannelSubscribeCommand(IRedisConnection redisConnection, Guid channelId, Guid subscriberId)
+        public ChannelSubscribeCommand(IRedisConnection redisConnection, ChannelSubscribeParams channelSubscribeParams)
         {
             _redisConnection = redisConnection;
-            _channelId = channelId; 
-            _subscriberId = subscriberId;
+            _channelId = channelSubscribeParams.ChannelId;
+            _subscriberId = channelSubscribeParams.SubscriberId;
         }
 
         public void Run()
