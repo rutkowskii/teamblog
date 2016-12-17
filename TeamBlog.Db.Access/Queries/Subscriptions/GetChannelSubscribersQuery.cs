@@ -22,7 +22,7 @@ namespace TeamBlog.Db.Access.Queries.Subscriptions
         {
             _redisDb = _redisConnection.Db;
             var subscribers = _redisDb
-                .SetMembers(RedisDbObjects.ChannelSubscribersKey(_channelId))
+                .SetMembers(RedisModel.ChannelSubscribers.KeyFor(_channelId))
                 .ToArray();
 
             var subscribersParsed = subscribers

@@ -29,7 +29,7 @@ namespace TeamBlog.Db.Access.Queries
 
         public PostAddedUserNotification[] Run()
         {
-            var userNotificationsKey = RedisDbObjects.UserNotificationsKey(_userId);
+            var userNotificationsKey = RedisModel.UserNotifications.KeyFor(_userId);
             var notificationIds = ResolveNotificationIds(userNotificationsKey);
             var results = ReadNotifications(notificationIds).ToArray();
             return results;
@@ -46,7 +46,7 @@ namespace TeamBlog.Db.Access.Queries
         {
             foreach (var notificationId in notificationIds)
             {
-                var hashIdentifier = RedisDbObjects.NotificationsKey(notificationId);
+                var hashIdentifier = RedisModel.Notifications.KeyFor(notificationId);
                 var reader = _hashReaderBuilder.Build(hashIdentifier);
                 yield return reader.Read();
             }

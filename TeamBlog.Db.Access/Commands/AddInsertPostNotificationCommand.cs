@@ -45,14 +45,14 @@ namespace TeamBlog.Db.Access.Commands
         private void AddNotificationForUser(Guid subscriber, PostAddedUserNotification newNotification)
         {
             var userId = subscriber.ToString();
-            var nextElementKey = RedisDbObjects.UserNotificationsNextElementKey(userId);
-            var sortedSetKey = RedisDbObjects.UserNotificationsKey(userId);
+            var nextElementKey = RedisModel.UserNotifications.NextElementKeyFor(userId);
+            var sortedSetKey = RedisModel.UserNotifications.KeyFor(userId);
             _sortedSetWriterBuilder.Build(nextElementKey, sortedSetKey).Append(newNotification.Id.ToString());
         }
 
         private void InsertNotification(PostAddedUserNotification dbNotification)
         {
-            var hashIdentifier = RedisDbObjects.NotificationsKey(dbNotification.Id);
+            var hashIdentifier = RedisModel.Notifications.KeyFor(dbNotification.Id);
             var hashWriter = _hashWriterBuilder.Build(hashIdentifier);
             hashWriter.Write(dbNotification);
         }

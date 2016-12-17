@@ -19,7 +19,7 @@ namespace TeamBlog.Db.Access.Commands.Subscriptions
         public void Run()
         {
             var db = _redisConnection.Db;
-            db.SetRemove(RedisDbObjects.ChannelSubscribersKey(_channelId), _subscriberId.ToString());
+            db.SetRemove(RedisModel.ChannelSubscribers.KeyFor(_channelId), _subscriberId.ToString());
         }
     }
 }

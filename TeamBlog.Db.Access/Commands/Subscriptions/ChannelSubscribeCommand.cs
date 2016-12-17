@@ -19,8 +19,8 @@ namespace TeamBlog.Db.Access.Commands.Subscriptions
         public void Run()
         {
             var db = _redisConnection.Db;
-            db.SetAdd(RedisDbObjects.ChannelSubscribersKey(_channelId), _subscriberId.ToString());
-            db.SetAdd(RedisDbObjects.UserChannelsKey(_subscriberId), _channelId.ToString());
+            db.SetAdd(RedisModel.ChannelSubscribers.KeyFor(_channelId), _subscriberId.ToString());
+            db.SetAdd(RedisModel.UserChannels.KeyFor(_subscriberId), _channelId.ToString());
         }
     }
 }

@@ -21,7 +21,7 @@ namespace TeamBlog.Db.Access.Queries.Subscriptions
         {
             var channels = _redisConnection
                 .Db
-                .SetMembers(RedisDbObjects.UserChannelsKey(_userId))
+                .SetMembers(RedisModel.UserChannels.KeyFor(_userId))
                 .Select(ch => ch.ToGuid())
                 .ToArray();
             return channels;

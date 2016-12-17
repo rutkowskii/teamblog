@@ -15,6 +15,7 @@ namespace TeamBlog.Bl
         void AddPost(NewPostDto newPostDto);
 
         // todo mam co do tego watpliwosci -- przeciez user robi wszystko.. jak to zamodelować?
+
         // może w user powinno zostać tylko to co dla niego wlasciwe -> typu feed? 
         // z 2ej strony, jeżeli user stanie sie agg rootem to może nie ma tragedii?
     }
