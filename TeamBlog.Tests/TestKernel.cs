@@ -23,7 +23,7 @@ namespace TeamBlog.Tests
             MongoAdapter.ChannelCollection.Clear();
             MongoAdapter.PostCollection.Clear();
             MongoAdapter.ChannelPostCollection.Clear();
-            Instance.Get<IRedisConnection>().Flush();
+            Instance.Get<IRedisConnection>().FlushDb();
         }
     }
 }

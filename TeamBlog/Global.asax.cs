@@ -36,7 +36,7 @@ namespace TeamBlog
             K.Get<IMongoAdapter>().ChannelCollection.Clear();
             K.Get<IMongoAdapter>().PostCollection.Clear();
             K.Get<IMongoAdapter>().ChannelPostCollection.Clear();
-            K.Get<IRedisConnection>().Flush();
+            K.Get<IRedisConnection>().FlushDb();
 
 
 

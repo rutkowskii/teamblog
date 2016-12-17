@@ -9,7 +9,7 @@ using Xbehave;
 
 namespace TeamBlog.Tests
 {
-    public class ChannelSubscriptionsTest : TestBase //todo should be replaced w/ controllers. 
+    public class ChannelSubscriptionsTest : TestBase
     {
         private readonly Guid _channelId = new Guid("75FFB10B-576B-4939-9B08-AB315151311C");
         private readonly Guid _subscriberId1 = new Guid("E0444695-C9D4-4464-A518-D4A87263E58B");

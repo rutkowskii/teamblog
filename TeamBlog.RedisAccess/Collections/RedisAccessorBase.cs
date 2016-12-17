@@ -8,7 +8,7 @@ namespace TeamBlog.RedisAccess.Collections
 
         protected RedisAccessorBase(IRedisConnection redisConnection)
         {
-            _redisDb = redisConnection.AccessRedis();
+            _redisDb = redisConnection.Db;
         }
     }
 }

@@ -4,7 +4,7 @@ namespace TeamBlog.RedisAccess
 {
     public interface IRedisConnection
     {
-        IDatabase AccessRedis();
-        void Flush();
+        IDatabase Db { get; }
+        void FlushDb();
     }
 }

@@ -28,14 +28,14 @@ namespace TeamBlog.RedisAccess
             return CreateKeyForNextElement(UserNotifications, userId.ToString());
         }
 
-        private static string CreateKeyForNextElement(string identifier, string value)
-        {
-            return CreateKey(identifier + ".nextElement", value);
-        }
-
         public static string NotificationsKey(object notificationId)
         {
             return CreateKey(Notifications, notificationId.ToString());
+        }
+
+        private static string CreateKeyForNextElement(string identifier, string value)
+        {
+            return CreateKey(identifier + ".nextElement", value);
         }
 
         private static string CreateKey(string category, string id)

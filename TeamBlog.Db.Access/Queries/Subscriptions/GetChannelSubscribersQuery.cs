@@ -2,6 +2,7 @@
 using System.Linq;
 using StackExchange.Redis;
 using TeamBlog.RedisAccess;
+using TeamBlog.Utils;
 
 namespace TeamBlog.Db.Access.Queries.Subscriptions
 {
@@ -19,14 +20,13 @@ namespace TeamBlog.Db.Access.Queries.Subscriptions
 
         public Guid[] Run()
         {
-            _redisDb = _redisConnection.AccessRedis();
+            _redisDb = _redisConnection.Db;
             var subscribers = _redisDb
-                .SetMembers(RedisDbObjects.ChannelSubscribersKey(this._channelId))
+                .SetMembers(RedisDbObjects.ChannelSubscribersKey(_channelId))
                 .ToArray();
 
             var subscribersParsed = subscribers
-                .Select(s => (string) s)
-                .Select(str => new Guid(str))
+                .Select(s => s.ToGuid())
                 .ToArray();
 
             return subscribersParsed;

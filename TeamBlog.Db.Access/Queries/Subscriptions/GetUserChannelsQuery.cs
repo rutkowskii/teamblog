@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using StackExchange.Redis;
 using TeamBlog.RedisAccess;
+using TeamBlog.Utils;
 
 namespace TeamBlog.Db.Access.Queries.Subscriptions
 {
-    public class GetUserChannelsQuery : IQuery<RedisValue> //todo queries should not expose redis values. 
+    public class GetUserChannelsQuery : IQuery<Guid> 
     {
         private readonly IRedisConnection _redisConnection;
         private readonly Guid _userId;
@@ -16,12 +17,14 @@ namespace TeamBlog.Db.Access.Queries.Subscriptions
             _userId = userId;
         }
 
-        public RedisValue[] Run()
+        public Guid[] Run()
         {
-            var redisDb = _redisConnection.AccessRedis(); //todo dry, extensions methods for redisDb?
-            var channels = redisDb
-                .SetMembers(RedisDbObjects.UserChannelsKey(_userId));
-            return channels.ToArray();
+            var channels = _redisConnection
+                .Db
+                .SetMembers(RedisDbObjects.UserChannelsKey(_userId))
+                .Select(ch => ch.ToGuid())
+                .ToArray();
+            return channels;
         }
     }
 }

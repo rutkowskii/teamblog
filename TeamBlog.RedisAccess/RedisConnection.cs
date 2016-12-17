@@ -21,13 +21,16 @@ namespace TeamBlog.RedisAccess
             _redis = ConnectionMultiplexer.Connect(_connectionParamsProvider.ConnectionString);
         }
 
-        public IDatabase AccessRedis()
+        public IDatabase Db
         {
-            var db = _redis.GetDatabase(_connectionParamsProvider.DatabaseNumber); 
-            return db;
+            get
+            {
+                var db = _redis.GetDatabase(_connectionParamsProvider.DatabaseNumber);
+                return db;
+            }
         }
 
-        public void Flush()
+        public void FlushDb()
         {
             var server = _redis.GetServer(_connectionParamsProvider.ServerUrl, _connectionParamsProvider.ServerPort);
             server.FlushDatabase(_connectionParamsProvider.DatabaseNumber);

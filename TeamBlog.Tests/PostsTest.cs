@@ -7,6 +7,7 @@ using TeamBlog.Bl;
 using TeamBlog.Controllers;
 using TeamBlog.Db.Access.Commands.Channels;
 using TeamBlog.Jsondtos;
+using TeamBlog.Utils;
 using Xbehave;
 
 namespace TeamBlog.Tests
@@ -61,7 +62,7 @@ namespace TeamBlog.Tests
             var postsController = K.Resolve<PostsController>();
             postsController.AddNewPost(new NewPostJsondto
             {
-                Channels = new[] {ChannelId}, //todo object extensions 
+                Channels = ChannelId.AsArray(),
                 Content = content,
                 Title = title
             });

@@ -41,8 +41,7 @@ namespace TeamBlog.Bl
 
         public PostDto[] GetGeneralFeedPosts()
         {
-            var channelsAsRedisVals = _userChannelsQueryBuilder.Build(_id).Run().ToArray();
-            var channels = Array.ConvertAll(channelsAsRedisVals, x => (string)x).Select(s => new Guid(s)).ToArray();
+            var channels = _userChannelsQueryBuilder.Build(_id).Run().ToArray();
             var posts = _channelsPostsQueryBuilder.Build(channels).Run();
             return posts;
         }
