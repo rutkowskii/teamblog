@@ -142,7 +142,7 @@
       <Project>{D6DF241E-6C1E-44F1-8D97-6ADF9ADE7F2C}</Project>
       <Name>TeamBlog.RedisAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TeamBlog.Services\TeamBlog.Bl.csproj">
+    <ProjectReference Include="..\TeamBlog.Bl\TeamBlog.Bl.csproj">
       <Project>{2A9EB8B8-D913-4B78-A682-5A31826A46E5}</Project>
       <Name>TeamBlog.Bl</Name>
     </ProjectReference>

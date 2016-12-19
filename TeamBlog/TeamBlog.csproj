@@ -186,11 +186,15 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ChannelsController.cs" />
+    <Compile Include="Controllers\ChannelSubscriptionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Hubs\BackgroundServerTimeTimer.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Jsondtos\Mapping\PostJsondtoMapper.cs" />
+    <Compile Include="Jsondtos\NewChannelJsondto.cs" />
+    <Compile Include="Jsondtos\NewPostJsondto.cs" />
     <Compile Include="Jsondtos\PostJsonDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -246,6 +250,10 @@
     <Content Include="Scripts\angular-animate\angular-animate.min.js.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TeamBlog.Bl\TeamBlog.Bl.csproj">
+      <Project>{2A9EB8B8-D913-4B78-A682-5A31826A46E5}</Project>
+      <Name>TeamBlog.Bl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamBlog.Db.Access\TeamBlog.Db.Cq.csproj">
       <Project>{1FB2457E-9963-41E5-AACC-CCF54A6BF0E4}</Project>
       <Name>TeamBlog.Db.Cq</Name>
@@ -265,10 +273,6 @@
     <ProjectReference Include="..\TeamBlog.RedisAccess\TeamBlog.RedisAccess.csproj">
       <Project>{D6DF241E-6C1E-44F1-8D97-6ADF9ADE7F2C}</Project>
       <Name>TeamBlog.RedisAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TeamBlog.Services\TeamBlog.Bl.csproj">
-      <Project>{2A9EB8B8-D913-4B78-A682-5A31826A46E5}</Project>
-      <Name>TeamBlog.Bl</Name>
     </ProjectReference>
     <ProjectReference Include="..\TeamBlog.Utils\TeamBlog.Utils.csproj">
       <Project>{51B647D2-70E8-4CE8-9698-E1529FF0BF2D}</Project>

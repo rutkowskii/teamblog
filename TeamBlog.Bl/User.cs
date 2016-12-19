@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using TeamBlog.Db.Access.Commands.Posts;
 using TeamBlog.Db.Access.Commands.Subscriptions;
@@ -8,18 +8,6 @@ using TeamBlog.Dtos;
 
 namespace TeamBlog.Bl
 {
-    public interface IUser
-    {
-        PostDto[] GetGeneralFeedPosts();
-        void SubscribeToChannel(Guid channelId);
-        void AddPost(NewPostDto newPostDto);
-
-        // todo mam co do tego watpliwosci -- przeciez user robi wszystko.. jak to zamodelować?
-
-        // może w user powinno zostać tylko to co dla niego wlasciwe -> typu feed? 
-        // z 2ej strony, jeżeli user stanie sie agg rootem to może nie ma tragedii?
-    }
-
     public class User : IUser
     {
         private readonly IChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;

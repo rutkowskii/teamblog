@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChannelDto.cs" />
+    <Compile Include="NewPostDto.cs" />
     <Compile Include="PostAddedDto.cs" />
     <Compile Include="PostDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

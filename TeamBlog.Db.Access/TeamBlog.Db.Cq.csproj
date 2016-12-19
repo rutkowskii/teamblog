@@ -80,6 +80,8 @@
     <Compile Include="Commands\Posts\InsertNewPostCommandResult.cs" />
     <Compile Include="Commands\PostAddedUserNotificationHashSerializer.cs" />
     <Compile Include="CqIocModule.cs" />
+    <Compile Include="Queries\Channels\ChannelsQuery.cs" />
+    <Compile Include="Queries\Channels\IChannelsQueryBuilder.cs" />
     <Compile Include="Queries\Subscriptions\GetChannelSubscribersQuery.cs" />
     <Compile Include="Queries\Subscriptions\IGetChannelSubscribersQueryBuilder.cs" />
     <Compile Include="Queries\Posts\GetLatestChannelsPostsQuery.cs" />
@@ -122,9 +124,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Queries\Channels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

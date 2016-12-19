@@ -7,6 +7,7 @@ namespace TeamBlog.Bl
         public override void Load()
         {
            BindTransient<IUserFactory, UserFactory>();
+           BindTransient<IChannelsService, ChannelsService>();
         }
     }
 }

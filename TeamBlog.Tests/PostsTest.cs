@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using MongoDB.Driver;
 using TeamBlog.Bl;
 using TeamBlog.Controllers;
-using TeamBlog.Db.Access.Commands.Channels;
 using TeamBlog.Jsondtos;
 using TeamBlog.Utils;
 using Xbehave;
@@ -14,17 +12,18 @@ namespace TeamBlog.Tests
 {
     public class PostsTest : TestBase
     {
-        private IEnumerable<PostJsondto> actualPosts;
+        private IEnumerable<PostJsondto> _actualPosts;
         private const string ChannelName = "smieszki-channel";
 
         [Scenario]
         public void AddThenRetrievePosts()
         {
-            //todo controllers in these 2 cases. 
             "GIVEN the channel is created".x(() => { InsertChannel(); });
 
-            "and GIVEN the user is subscribed to the channel".x(
-              () => { K.Resolve<IUserFactory>().GetCurrentUser().SubscribeToChannel(ChannelId); });
+            "and GIVEN the user is subscribed to the channel".x(() =>
+            {
+                K.Resolve<ChannelSubscriptionsController>().Subscribe(ChannelId);
+            });
 
             "and GIVEN the posts are inserted".x(() =>
             {
@@ -34,13 +33,13 @@ namespace TeamBlog.Tests
 
             "WHEN querying for the user feed".x(() =>
             {
-                actualPosts = K.Resolve<PostsController>()
+                _actualPosts = K.Resolve<PostsController>()
                     .GetFeedPosts();
             });
 
             "THEN proper posts should be returned".x(() =>
             {
-                actualPosts
+                _actualPosts
                     .Select(p => p.Content)
                     .ShouldBeEquivalentTo(new[] {"zzz", "aaa"});
             });
@@ -48,11 +47,11 @@ namespace TeamBlog.Tests
 
         private void InsertChannel()
         {
-            K.Resolve<ICreateChannelCommandBuilder>().Build(ChannelName).Run();
+            K.Resolve<ChannelsController>().AddNewChannel(new NewChannelJsondto { Name = ChannelName});
         }
 
         private Guid ChannelId => 
-            this.K.MongoAdapter.ChannelCollection.AsQueryable()
+            K.Resolve<ChannelsController>().GetAll()
                 .Where(ch => ch.Name == ChannelName)
                 .Select(ch => ch.Id)
                 .First();

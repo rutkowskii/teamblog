@@ -1,7 +1,5 @@
-﻿using TeamBlog.Db.Access.Commands;
-using TeamBlog.Db.Access.Commands.Posts;
+﻿using TeamBlog.Db.Access.Commands.Posts;
 using TeamBlog.Db.Access.Commands.Subscriptions;
-using TeamBlog.Db.Access.Queries;
 using TeamBlog.Db.Access.Queries.Posts;
 using TeamBlog.Db.Access.Queries.Subscriptions;
 
