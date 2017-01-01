@@ -16,6 +16,12 @@ namespace TeamBlog.Tests
             return Instance.Get<T>();
         }
 
+        public void Override<T>(T instance)
+        {
+            Instance.Rebind<T>().ToConstant(instance);
+        }
+
+
         public IMongoAdapter MongoAdapter => this.Instance.Get<IMongoAdapter>();
 
         public void Flush()
