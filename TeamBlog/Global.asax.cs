@@ -46,6 +46,7 @@ namespace TeamBlog
 
             K.Get<IUserFactory>().GetCurrentUser().SubscribeToChannel(channelId);
             K.Get<IUserFactory>().GetCurrentUser().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
+            K.Get<IUserFactory>().GetCurrentUser().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
         }
 
         private void RunServices()
