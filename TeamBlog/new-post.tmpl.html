@@ -17,6 +17,14 @@
                     <label>Title</label>
                     <input type="text" ng-model="newPost.title">
                 </md-input-container>
+                
+                
+                <md-input-container style="width:calc(100% - 10px)">
+                    <label>Channels</label>
+                    <md-select ng-model="newPost.channels" multiple="true" placeholder="Select channels">
+                        <md-option ng-value="opt.Id" ng-repeat="opt in allChannelsAvailable">{{ opt.Name }}</md-option>
+                    </md-select>
+                </md-input-container>
 
                 <md-input-container style="width:calc(100% - 10px)">
                     <label>Content</label>

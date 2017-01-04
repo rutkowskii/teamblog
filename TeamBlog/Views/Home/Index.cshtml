@@ -31,19 +31,19 @@
                 <!-- fill up the space between left and right area -->
                 <span flex></span>
                 
-                    <!--a is a hack so the menu works -->
-                    <md-button class="md-fab md-mini" md-menu-origin
-                               ng-if="anyNotifications"
-                               ng-click="$mdOpenMenu($event)">
-                        {{notfsCount}}
-                        <md-tooltip md-direction="bottom">
-                            Show only unseen posts
-                        </md-tooltip>
-                    </md-button>
+                <!--a is a hack so the menu works -->
+                <md-button class="md-fab md-mini" md-menu-origin
+                           ng-if="anyNotifications"
+                           ng-click="$mdOpenMenu($event)">
+                    {{notfsCount}}
+                    <md-tooltip md-direction="bottom">
+                        Show only unseen posts
+                    </md-tooltip>
+                </md-button>
                       
             </div>
         </md-toolbar>
-        <md-content layout="column" layout-align="start center" ng-controller="posts">
+        <md-content layout-fill layout="column" layout-align="start center" ng-controller="posts">
             <div ng-repeat="post in posts">
                 <md-card>
                     <md-card-header>
@@ -54,40 +54,44 @@
                     </md-card-content>
                 </md-card>
             </div>
-
-
-            <div ng-controller="new-posts">
-                <md-fab-speed-dial md-direction="up"
-                                   md-open="false"
-                                   class="md-fab-bottom-right md-scale">
-                    <md-fab-trigger>
-                        <md-button class="md-fab md-warn">
-                            +
-                        </md-button>
-                    </md-fab-trigger>
-
-                    <md-fab-actions>
-                        <md-button class="md-fab md-raised md-mini">
-                            A
-                            <md-tooltip md-direction="left">
-                                New link
-                            </md-tooltip>
-                        </md-button>
-                        <md-button class="md-fab md-raised md-mini" ng-click="showNewPostsDialog($event)">
-                            B
-                            <md-tooltip md-direction="left">
-                                New post
-                            </md-tooltip>
-                        </md-button>
-                        <md-button class="md-fab md-raised md-mini">
-                            C
-                        </md-button>
-                    </md-fab-actions>
-                </md-fab-speed-dial>
-            </div>
-
         </md-content>
+        
+        <div ng-controller="new-posts">
+            <md-fab-speed-dial style="position: fixed"
+                               md-direction="up"
+                               md-open="false"
+                               class="md-fab-bottom-right md-scale">
+                <md-fab-trigger>
+                    <md-button class="md-fab md-warn">
+                        +
+                    </md-button>
+                </md-fab-trigger>
+
+                <md-fab-actions>
+                    <md-button class="md-fab md-raised md-mini">
+                        A
+                        <md-tooltip md-direction="left">
+                            New link
+                        </md-tooltip>
+                    </md-button>
+                    <md-button class="md-fab md-raised md-mini" ng-click="showNewPostsDialog($event)">
+                        B
+                        <md-tooltip md-direction="left">
+                            New post
+                        </md-tooltip>
+                    </md-button>
+                    <md-button class="md-fab md-raised md-mini">
+                        C
+                    </md-button>
+                </md-fab-actions>
+            </md-fab-speed-dial>
+        </div>
     </div>
+    
+    
+
+    
+
 </div>
 </body>
 </html>

@@ -1,18 +1,23 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Web.Http;
 using TeamBlog.Bl;
 using TeamBlog.Dtos;
 using TeamBlog.Jsondtos;
+using TeamBlog.Utils;
 
 namespace TeamBlog.Controllers
 {
     public class ChannelsController : ApiController
     {
         private readonly IChannelsService _channelsService;
+        private readonly BaseMapper<ChannelDto, ChannelJsondto> _channelMapper;
 
-        public ChannelsController(IChannelsService channelsService)
+        public ChannelsController(IChannelsService channelsService, BaseMapper<ChannelDto, ChannelJsondto> channelMapper)
         {
             _channelsService = channelsService;
+            _channelMapper = channelMapper;
         }
 
         [HttpPost]
@@ -25,9 +30,10 @@ namespace TeamBlog.Controllers
 
         [HttpGet]
         [Route(@"api/channels")]
-        public IEnumerable<ChannelDto> GetAll()
+        public IEnumerable<ChannelJsondto> GetAll()
         {
-            return _channelsService.GetAll();
+            var results = _channelsService.GetAll().Select(_channelMapper.Map);
+            return results;
         }
     }
 }

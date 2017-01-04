@@ -41,10 +41,13 @@ namespace TeamBlog
 
 
             K.Get<ICreateChannelCommandBuilder>().Build("śmieszki").Run();
+            K.Get<ICreateChannelCommandBuilder>().Build("dev general").Run();
+            K.Get<ICreateChannelCommandBuilder>().Build("programming").Run();
 
             var channelId = K.Get<IMongoAdapter>().ChannelCollection.AsQueryable().First().Id;
 
             K.Get<IUserFactory>().GetCurrentUser().SubscribeToChannel(channelId);
+            K.Get<IUserFactory>().GetCurrentUser().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
             K.Get<IUserFactory>().GetCurrentUser().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
         }
 

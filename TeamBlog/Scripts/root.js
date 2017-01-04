@@ -40,21 +40,20 @@
         "$scope", "$http", function ($scope, $http) {
             $scope.dummy = "aaaaaaaaaaaa";
             $scope.posts = [];
-
-            $http.get("api/posts", {}).then(function onSuccess(response) {
-                appendScopePosts(response);
-            });
             var appendScopePosts = function (response) {
                 response.data.forEach(function (item) {
                     $scope.posts.push(item);
                 });
             };
+            $http.get("api/posts", {}).then(function(response) {
+                appendScopePosts(response);
+            });
         }
     ])
 
     
     .controller("new-posts", [
-        "$scope", "$mdDialog", "$http", function ($scope, $mdDialog, $http) {
+        "$scope", "$mdDialog", "$http", "$mdToast", function ($scope, $mdDialog, $http, $mdToast) {
             $scope.showNewPostsDialog = function (ev) {
                 $mdDialog.show({
                     controller: DialogController,
@@ -65,20 +64,48 @@
                     fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
                 })
                 .then(function (answer) {
-                    console.log("we got the following answer  " + answer.title + "  " + answer.content)
-                    $http.post("api/posts", answer);
-                    //todo on getting the response, show a toast at the bottom. 
+                    console.log("we got a following dialog answer: " + JSON.stringify(answer));
+
+                    $http.post("api/posts", answer).then(onPostAddSuccess, onPostAddError);
+                    
                 }, function () {
                     $scope.status = 'You cancelled the dialog.';
                 });
 
 
+                function onPostAddSuccess(response) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Post added successfully')
+                            .hideDelay(3000)
+                    );
+                }
+
+                function onPostAddError(response) {
+                    $mdToast.show(
+                       $mdToast.simple()
+                           .textContent('Something went wrong :(')
+                           .hideDelay(3000)
+                   );
+                }
+
+                //todo customize it. 
+                
+
                 //todo reusable, move it 
-                function DialogController($scope, $mdDialog) {
+                function DialogController($scope, $mdDialog, $http) {
                     $scope.hide = function () {
                         $mdDialog.hide();
                     };
-                    $scope.newPost = {};
+                    $scope.newPost = {}; //todo if this is gonna be reusable, get rid of name 'newPost'
+                    $scope.allChannelsAvailable = [];
+                    $http.get("api/channels", {}).then(function(response) {
+                        response.data.forEach(function(item) {
+                            console.log("hey we got an item");
+                            $scope.allChannelsAvailable.push(item);
+                        });
+                    });
+                    
 
                     $scope.cancel = function () {
                         $mdDialog.cancel();
