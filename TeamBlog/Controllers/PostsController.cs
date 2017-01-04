@@ -2,21 +2,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using TeamBlog.Jsondtos;
-using TeamBlog.Jsondtos.Mapping;
 using TeamBlog.Bl;
 using TeamBlog.Dtos;
+using TeamBlog.Utils;
 
 namespace TeamBlog.Controllers
 {
     public class PostsController : ApiController
     {
         private readonly IUserFactory _userFactory;
-        private readonly PostJsondtoMapper _postJsondtoMapper;
+        private readonly BaseMapper<PostDto, PostJsondto> _postJsondtoMapper;
+        private readonly BaseMapper<NewPostJsondto, NewPostDto> _newpostDtoMapper;
 
-        public PostsController(IUserFactory userFactory, PostJsondtoMapper postJsondtoMapper)
+        public PostsController(
+            IUserFactory userFactory, 
+            BaseMapper<NewPostJsondto, NewPostDto> newpostDtoMapper, 
+            BaseMapper<PostDto, PostJsondto> postJsondtoMapper)
         {
             _userFactory = userFactory;
             _postJsondtoMapper = postJsondtoMapper;
+            _newpostDtoMapper = newpostDtoMapper;
         }
 
         [HttpGet]
@@ -32,12 +37,7 @@ namespace TeamBlog.Controllers
         [Route(@"api/posts")]
         public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
         {
-            CurrentUser.AddPost(new NewPostDto
-            {
-                Channels = newPost.Channels,
-                Content = newPost.Content,
-                Title = newPost.Title
-            }); //todo mapping
+            CurrentUser.AddPost(_newpostDtoMapper.Map(newPost));
 
             return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
         }

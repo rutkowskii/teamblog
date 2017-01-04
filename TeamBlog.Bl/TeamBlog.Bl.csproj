@@ -61,6 +61,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TeamBlog.Bus\TeamBlog.Bus.csproj">
+      <Project>{3AD26DED-FE46-4DE5-9EF5-4A02B7139355}</Project>
+      <Name>TeamBlog.Bus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamBlog.Db.Access\TeamBlog.Db.Cq.csproj">
       <Project>{1fb2457e-9963-41e5-aacc-ccf54a6bf0e4}</Project>
       <Name>TeamBlog.Db.Cq</Name>

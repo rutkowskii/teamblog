@@ -32,9 +32,9 @@ namespace TeamBlog.Db.Access.Queries.Posts
                 .Select(id => postsByIds[id])
                 .Select(post => new PostDto
                 {
-                    Author = "dummy",
+                    Author = "dummy", //todo tmp
                     Url = post.Title,
-                    Description = post.Content,
+                    Content = post.Content,
                     CreationDate = post.CreationDate
                 })
                 .ToArray();
