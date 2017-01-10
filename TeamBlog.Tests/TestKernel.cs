@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Moq;
 using Ninject;
 using TeamBlog.MongoAccess;
 using TeamBlog.RedisAccess;
@@ -21,6 +23,12 @@ namespace TeamBlog.Tests
             Instance.Rebind<T>().ToConstant(instance);
         }
 
+        public void OverrideWithMock<T>(Action<Mock<T>> mockSetup) where T : class
+        {
+            var mock = new Mock<T>();
+            mockSetup(mock);
+            Override(mock.Object);
+        }
 
         public IMongoAdapter MongoAdapter => this.Instance.Get<IMongoAdapter>();
 

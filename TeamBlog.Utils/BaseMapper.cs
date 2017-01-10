@@ -4,21 +4,28 @@ namespace TeamBlog.Utils
 {
     public class BaseMapper<TSrc, TDest>
     {
-        private static readonly IMapper DefaultMapper;
-
-        static BaseMapper()
-        {
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<TSrc, TDest>();
-            });
-
-            DefaultMapper = config.CreateMapper();
-        }
+        private static MapperConfiguration MapperConfiguration;
 
         public TDest Map(TSrc source)
         {
-            var dest = DefaultMapper.Map<TSrc, TDest>(source);
+            InitializeConfigurationIfNeeded();
+            var dest = MapperConfiguration.CreateMapper().Map<TSrc, TDest>(source);
             return dest;
+        }
+
+        private void InitializeConfigurationIfNeeded()
+        {
+            if (MapperConfiguration != null) return;
+            MapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                var mapping = cfg.CreateMap<TSrc, TDest>();
+                CustomConfiguration(mapping);
+            });
+        }
+
+        protected virtual void CustomConfiguration(IMappingExpression<TSrc, TDest> mapping)
+        {
+            
         }
     }
 }

@@ -4,23 +4,24 @@ using System.Web.Http;
 using TeamBlog.Jsondtos;
 using TeamBlog.Bl;
 using TeamBlog.Dtos;
+using TeamBlog.Mapper;
 using TeamBlog.Utils;
 
 namespace TeamBlog.Controllers
 {
     public class PostsController : ApiController
     {
-        private readonly IUserFactory _userFactory;
-        private readonly BaseMapper<PostDto, PostJsondto> _postJsondtoMapper;
+        private readonly PostDto2PostJsondtoMapper _postJsondtoMapper;
+        private readonly IUser _currentUser;
         private readonly BaseMapper<NewPostJsondto, NewPostDto> _newpostDtoMapper;
 
         public PostsController(
-            IUserFactory userFactory, 
             BaseMapper<NewPostJsondto, NewPostDto> newpostDtoMapper, 
-            BaseMapper<PostDto, PostJsondto> postJsondtoMapper)
+            PostDto2PostJsondtoMapper postJsondtoMapper,
+            IUser currentUser)
         {
-            _userFactory = userFactory;
-            _postJsondtoMapper = postJsondtoMapper;
+            _postJsondtoMapper = postJsondtoMapper; 
+            _currentUser = currentUser;
             _newpostDtoMapper = newpostDtoMapper;
         }
 
@@ -28,7 +29,7 @@ namespace TeamBlog.Controllers
         [Route(@"api/posts")]
         public IEnumerable<PostJsondto> GetFeedPosts()
         {
-            var posts = CurrentUser.GetGeneralFeedPosts();
+            var posts = _currentUser.GetGeneralFeedPosts();
             var postsMapped = posts.Select(_postJsondtoMapper.Map).ToArray();
             return postsMapped;
         }
@@ -37,11 +38,9 @@ namespace TeamBlog.Controllers
         [Route(@"api/posts")]
         public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
         {
-            CurrentUser.AddPost(_newpostDtoMapper.Map(newPost));
+            _currentUser.AddPost(_newpostDtoMapper.Map(newPost));
 
             return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
         }
-
-        private IUser CurrentUser => _userFactory.GetCurrentUser();
     }
 }

@@ -6,8 +6,9 @@ namespace TeamBlog.Bl
     {
         public override void Load()
         {
-           BindTransient<IUserFactory, UserFactory>();
+           BindTransient<IUser, CurrentUser>();
            BindTransient<IChannelsService, ChannelsService>();
+           BindTransient<ISessionProvider, SessionProvider>();
         }
     }
 }

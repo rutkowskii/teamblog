@@ -68,7 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AddInsertPostNotificationCommandBuilder.cs" />
+    <Compile Include="Commands\AddUserCommand.cs" />
+    <Compile Include="Commands\IAddInsertPostNotificationCommandBuilder.cs" />
+    <Compile Include="Commands\IAddUserCommandBuilder.cs" />
     <Compile Include="Commands\Posts\IInsertNewPostCommandBuilder.cs" />
     <Compile Include="Commands\Subscriptions\ChannelSubscribeCommand.cs" />
     <Compile Include="Commands\Subscriptions\IChannelSubscribeCommandBuilder.cs" />

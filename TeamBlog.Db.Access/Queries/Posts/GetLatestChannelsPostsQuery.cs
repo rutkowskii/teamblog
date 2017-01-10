@@ -2,6 +2,7 @@
 using System.Linq;
 using MongoDB.Driver;
 using TeamBlog.Dtos;
+using TeamBlog.Model;
 using TeamBlog.MongoAccess;
 
 namespace TeamBlog.Db.Access.Queries.Posts
@@ -24,6 +25,7 @@ namespace TeamBlog.Db.Access.Queries.Posts
                 .OrderByDescending(chp => chp.InsertionTime)
                 .Select(chp => chp.PostId)
                 .ToList();
+
             var postsByIds = _adapter.PostCollection.AsQueryable()
                 .Where(p => postIds.Contains(p.Id))
                 .ToList()
@@ -32,12 +34,20 @@ namespace TeamBlog.Db.Access.Queries.Posts
                 .Select(id => postsByIds[id])
                 .Select(post => new PostDto
                 {
-                    Author = "dummy", //todo tmp
+                    Author = ResolveUserName(post),  // todo suboptimal performance. 
                     Url = post.Title,
                     Content = post.Content,
                     CreationDate = post.CreationDate
                 })
                 .ToArray();
+        }
+
+        private string ResolveUserName(Post post)
+        {
+            return _adapter.UserCollection
+                .AsQueryable()
+                .Single(u => u.Id == post.AuthorId)
+                .Name;
         }
     }
 }

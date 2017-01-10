@@ -46,9 +46,9 @@ namespace TeamBlog
 
             var channelId = K.Get<IMongoAdapter>().ChannelCollection.AsQueryable().First().Id;
 
-            K.Get<IUserFactory>().GetCurrentUser().SubscribeToChannel(channelId);
-            K.Get<IUserFactory>().GetCurrentUser().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
-            K.Get<IUserFactory>().GetCurrentUser().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
+            K.Get<IUser>().SubscribeToChannel(channelId);
+            K.Get<IUser>().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
+            K.Get<IUser>().AddPost(new NewPostDto {Channels = new [] {channelId}, Content = "efbufebuebvebuevbuevoiep evwbivwonbiv ehiweovinhodiw", Title = "enbie"});
         }
 
         private void RunServices()

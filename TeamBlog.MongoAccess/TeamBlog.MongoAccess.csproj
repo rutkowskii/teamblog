@@ -58,10 +58,11 @@
   <ItemGroup>
     <Compile Include="IMongoAdapter.cs" />
     <Compile Include="IMongoDbProvider.cs" />
+    <Compile Include="LocalTimeSerializer.cs" />
     <Compile Include="MongoAccessIocModule.cs" />
     <Compile Include="MongoAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TmpConnectionStringProvider.cs" />
+    <Compile Include="TmpMongoDbProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

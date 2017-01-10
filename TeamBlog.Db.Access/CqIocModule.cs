@@ -29,6 +29,7 @@ namespace TeamBlog.Db.Access
             BindFactory<IGetChannelSubscribersQueryBuilder>();
             BindFactory<IGetUserChannelsQueryBuilder>();
             BindFactory<IGetLatestChannelsPostsQueryBuilder>();
+            BindFactory<IAddUserCommandBuilder>();
         }
 
     }
