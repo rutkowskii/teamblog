@@ -1,5 +1,6 @@
 ﻿using System;
 using TeamBlog.Db.Access.Commands.Channels;
+using TeamBlog.Db.Access.Queries;
 using TeamBlog.Db.Access.Queries.Channels;
 using TeamBlog.Dtos;
 
@@ -26,5 +27,25 @@ namespace TeamBlog.Bl
         {
             return _channelsQueryBuilder.Build().Run();
         }
+    }
+
+    class UsersService : IUsersService
+    {
+        private GetUsersQuery _getUsersQuery;
+
+        public UsersService(GetUsersQuery getUsersQuery)
+        {
+            _getUsersQuery = getUsersQuery;
+        }
+
+        public UserDto[] GetAll()
+        {
+            return _getUsersQuery.Run();
+        }
+    }
+
+    public interface IUsersService
+    {
+        UserDto[] GetAll();
     }
 }

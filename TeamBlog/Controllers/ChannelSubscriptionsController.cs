@@ -6,18 +6,18 @@ namespace TeamBlog.Controllers
 {
     public class ChannelSubscriptionsController : ApiController
     {
-        private readonly IUserFactory _userFactory;
+        private readonly IUser _currentUser;
 
-        public ChannelSubscriptionsController(IUserFactory userFactory)
+        public ChannelSubscriptionsController(IUser currentUser)
         {
-            _userFactory = userFactory;
+            _currentUser = currentUser;
         }
 
         [HttpPost]
         [Route(@"api/subscriptions")]
         public System.Net.Http.HttpResponseMessage Subscribe([FromBody] Guid channelId)
         {
-            _userFactory.GetCurrentUser().SubscribeToChannel(channelId);
+            _currentUser.SubscribeToChannel(channelId);
             return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
         }
     }

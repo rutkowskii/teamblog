@@ -12,6 +12,7 @@ namespace TeamBlog.Utils
     {
         public IEnumerable<INinjectModule> Get()
         {
+            yield return new UtilsIocModule();
             yield return new MongoAccessIocModule();
             yield return new RedisAccessIocModule();
             yield return new BusIocModule();

@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44339</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -197,6 +197,7 @@
     <Compile Include="Controllers\ChannelSubscriptionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="FakesDbSeeder.cs" />
     <Compile Include="Hubs\BackgroundServerTimeTimer.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Jsondtos\ChannelJsondto.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapper\PostDto2PostJsondtoMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalRStartup.cs" />
     <Compile Include="Utils\WebappModulesProvider.cs" />

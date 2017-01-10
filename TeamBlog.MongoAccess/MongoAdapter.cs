@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using System;
+using MongoDB.Driver;
 using TeamBlog.Model;
 
 namespace TeamBlog.MongoAccess
@@ -12,19 +13,13 @@ namespace TeamBlog.MongoAccess
             _mongoDbProvider = mongoDbProvider;
         }
 
-        public IMongoCollection<Post> PostCollection
-        {
-            get { return GetCollectionByName<Post>("posts"); }
-        }
+        public IMongoCollection<Post> PostCollection => GetCollectionByName<Post>("posts");
 
-        public IMongoCollection<Channel> ChannelCollection
-        {
-            get { return GetCollectionByName<Channel>("channels"); }
-        }
-        public IMongoCollection<ChannelPost> ChannelPostCollection
-        {
-            get { return GetCollectionByName<ChannelPost>("channelPosts"); }
-        }
+        public IMongoCollection<Channel> ChannelCollection => GetCollectionByName<Channel>("channels");
+
+        public IMongoCollection<ChannelPost> ChannelPostCollection => GetCollectionByName<ChannelPost>("channelPosts");
+
+        public IMongoCollection<User> UserCollection => GetCollectionByName<User>("users");
 
         private IMongoCollection<T> GetCollectionByName<T>(string name)
         {

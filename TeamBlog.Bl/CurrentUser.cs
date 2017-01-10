@@ -9,49 +9,60 @@ using TeamBlog.Dtos;
 
 namespace TeamBlog.Bl
 {
-    public class User : IUser
+    public class CurrentUser : IUser
     {
         private readonly IChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
         private readonly IInsertNewPostCommandBuilder _insertNewPostCommandBuilder;
         private readonly IGetUserChannelsQueryBuilder _userChannelsQueryBuilder;
         private readonly IGetLatestChannelsPostsQueryBuilder _channelsPostsQueryBuilder;
         private readonly IBus _bus;
+        private readonly ISessionProvider _sessionProvider;
 
-        private readonly Guid _id = new Guid("668EA071-B0EE-4B1F-8FE4-4E95D4792FC8");
-
-        public User(IChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
+        public CurrentUser(IChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
             IInsertNewPostCommandBuilder insertNewPostCommandBuilder,
             IGetUserChannelsQueryBuilder userChannelsQueryBuilder,
-            IGetLatestChannelsPostsQueryBuilder channelsPostsQueryBuilder, 
-            IBus bus)
+            IGetLatestChannelsPostsQueryBuilder channelsPostsQueryBuilder,
+            IBus bus,
+            ISessionProvider sessionProvider)
         {
             _channelSubscribeCommandBuilder = channelSubscribeCommandBuilder;
             _insertNewPostCommandBuilder = insertNewPostCommandBuilder;
             _userChannelsQueryBuilder = userChannelsQueryBuilder;
             _channelsPostsQueryBuilder = channelsPostsQueryBuilder;
             _bus = bus;
+            _sessionProvider = sessionProvider;
         }
 
         public PostDto[] GetGeneralFeedPosts()
         {
-            var channels = _userChannelsQueryBuilder.Build(_id).Run().ToArray();
+            var channels = _userChannelsQueryBuilder.Build(CurrentUserId).Run().ToArray();
             var posts = _channelsPostsQueryBuilder.Build(channels).Run();
             return posts;
         }
 
         public void SubscribeToChannel(Guid channelId)
         {
-            _channelSubscribeCommandBuilder.Build(new ChannelSubscribeParams(channelId, _id)).Run();
+            _channelSubscribeCommandBuilder.Build(new ChannelSubscribeParams(channelId, CurrentUserId)).Run();
         }
 
         public void AddPost(NewPostDto newPostDto)
         {
             var cmd = _insertNewPostCommandBuilder
-                .Build(new InsertNewPostParams(newPostDto.Channels, newPostDto.Content, newPostDto.Content, _id));
+                .Build(BuildInsertNewPostParams(newPostDto));
             var result = cmd.Run();
-            
-            _bus.Publish(new PostCreatedEvent {ChannelIds = newPostDto.Channels });
-            
+
+            _bus.Publish(new PostCreatedEvent {ChannelIds = newPostDto.Channels});
         }
+
+        private InsertNewPostParams BuildInsertNewPostParams(NewPostDto newPostDto)
+        {
+            return new InsertNewPostParams(
+                channelIds: newPostDto.Channels, 
+                title: newPostDto.Content,
+                content: newPostDto.Content, 
+                userId: CurrentUserId);
+        }
+
+        private Guid CurrentUserId => _sessionProvider.UserId;
     }
 }

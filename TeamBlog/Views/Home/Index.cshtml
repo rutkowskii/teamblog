@@ -47,7 +47,7 @@
             <div ng-repeat="post in posts">
                 <md-card>
                     <md-card-header>
-                        {{post.AddedBy}} on {{post.Timestamp}} in {{post.Channel}}
+                        {{post.AddedBy}} on {{post.Timestamp}} in {{post.Channels.join(", ")}}
                     </md-card-header>
                     <md-card-content>
                         {{post.Content}}

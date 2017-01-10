@@ -1,4 +1,5 @@
 using System;
+using System.Dynamic;
 using StackExchange.Redis;
 
 namespace TeamBlog.Utils
