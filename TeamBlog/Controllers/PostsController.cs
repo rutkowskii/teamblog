@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web.Http;
 using TeamBlog.Jsondtos;
 using TeamBlog.Bl;
@@ -41,6 +42,22 @@ namespace TeamBlog.Controllers
             _currentUser.AddPost(_newpostDtoMapper.Map(newPost));
 
             return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
+        }
+    }
+
+    public class DummyController : ApiController
+    {
+        [HttpGet]
+        [Route(@"api/dummy")]
+        public IHttpActionResult Get()
+        {
+            var caller = User as ClaimsPrincipal;
+
+            return Json(new
+            {
+                message = "OK computer",
+                client = caller.FindFirst("client_id").Value
+            });
         }
     }
 }
