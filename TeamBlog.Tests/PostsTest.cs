@@ -10,7 +10,6 @@ using TeamBlog.Controllers;
 using TeamBlog.Db.Access.Commands;
 using TeamBlog.Jsondtos;
 using TeamBlog.MongoAccess;
-using TeamBlog.Utils;
 using TeamBlog.Utils.Datetime;
 using Xbehave;
 
@@ -21,32 +20,30 @@ namespace TeamBlog.Tests
         private IEnumerable<PostJsondto> _actualPosts;
         private Mock<IBus> _busMock;
         private IMessage _messageSent;
-        private const string ChannelName = "smieszki-channel";
+        private const string ChannelNameA = "smieszki-channel";
+        private const string ChannelNameB = "serious-channel";
         private readonly DateTime _mockedNow = new DateTime(2015, 05, 23, 3, 23, 11);
         private readonly string _userName = "Jan Kowalski";
 
         [Scenario]
-        public void AddThenRetrievePosts()
+        public void PostsRetrieval()
         {
             SetupDependencies();
 
-            "GIVEN the channel is created".x(() => { InsertChannel(); });
-
-            "and GIVEN the user is subscribed to the channel".x(() =>
-            {
-                K.Resolve<ChannelSubscriptionsController>().Subscribe(ChannelId);
+            "GIVEN the channel is created and user is subscribed to the channel".x(() => {
+                InsertChannel(ChannelNameA);
+                SubscribeToChannelA();
             });
 
             "and GIVEN the posts are inserted".x(() =>
             {
-                InsertPost(title: "abc", content: "aaa");
-                InsertPost(title: "xyz", content: "zzz");
+                InsertPost(title: "abc", content: "aaa", channelIds: new[] { ResolveChannelId(ChannelNameA) });
+                InsertPost(title: "xyz", content: "zzz", channelIds: new[] { ResolveChannelId(ChannelNameA) });
             });
 
             "WHEN querying for the user feed".x(() =>
             {
-                _actualPosts = K.Resolve<PostsController>()
-                    .GetFeedPosts();
+                RetrieveUserFeed();
             });
 
             "THEN posts should be returned in proper order".x(() =>
@@ -74,30 +71,85 @@ namespace TeamBlog.Tests
             {
                 _actualPosts
                     .Select(p => p.Channels)
-                    .ShouldAllBeEquivalentTo(new[] { new[] { ChannelName }, new[] { ChannelName } });
+                    .ShouldAllBeEquivalentTo(new[] { new[] { ChannelNameA }, new[] { ChannelNameA } });
             });
-
         }
 
-        // todo show only channels user is subscribed to 
-        // todo show only posts from users channels. 
+        [Scenario]
+        public void ShowOnlyChannelsUserIsSubscribedTo()
+        {
+            SetupDependencies();
 
+            "GIVEN the channel is created and user is subscribed to the channel".x(() => {
+                InsertChannel(ChannelNameA);
+                InsertChannel(ChannelNameB);
+                SubscribeToChannelA();
+            });
+
+            "and GIVEN the post is inserted to 2 channels".x(() =>
+            {
+                InsertPost(title: "abc", content: "aaa", 
+                    channelIds: new[] { ResolveChannelId(ChannelNameA) , ResolveChannelId(ChannelNameB) });
+            });
+
+            "WHEN querying for the user feed".x(() =>
+            {
+                RetrieveUserFeed();
+            });
+
+            "THEN post should only be marked with a channel user subscribed to".x(() =>
+            {
+                _actualPosts
+                    .SelectMany(p => p.Channels)
+                    .ShouldBeEquivalentTo(new[] { ChannelNameA });
+            });
+        }
+
+        [Scenario]
+        public void ShowOnlyPostsFromUserChannels()
+        {
+            SetupDependencies();
+
+            "GIVEN the channel is created and user is subscribed to the channel".x(() => {
+                InsertChannel(ChannelNameA);
+                InsertChannel(ChannelNameB);
+                SubscribeToChannelA();
+            });
+
+            "and GIVEN the post is inserted to 2 channels".x(() =>
+            {
+                InsertPost(title: "abc", content: "aaa",
+                    channelIds: new[] { ResolveChannelId(ChannelNameA) });
+                InsertPost(title: "zzz", content: "zzz",
+                    channelIds: new[] {ResolveChannelId(ChannelNameB)});
+            });
+
+            "WHEN querying for the user feed".x(() =>
+            {
+                RetrieveUserFeed();
+            });
+
+            "THEN feed should only contain posts from ".x(() =>
+            {
+                _actualPosts
+                    .Select(p => p.Content)
+                    .ShouldBeEquivalentTo(new[] { "aaa" });
+            });
+        }
 
         [Scenario]
         public void NotifyBusWhenCreatingAPost()
         {
             SetupDependencies();
 
-            "GIVEN the channel is created".x(() => { InsertChannel(); });
-
-            "and GIVEN the user is subscribed to the channel".x(() =>
-            {
-                K.Resolve<ChannelSubscriptionsController>().Subscribe(ChannelId);
+            "GIVEN the channel is created and user is subscribed to the channel".x(() => {
+                InsertChannel(ChannelNameA);
+                SubscribeToChannelA();
             });
 
             "and GIVEN the post is inserted".x(() =>
             {
-                InsertPost(title: "abc", content: "aaa");
+                InsertPost(title: "abc", content: "aaa", channelIds: new[] {ResolveChannelId(ChannelNameA)});
             });
 
             "THEN a notification should be created".x(() =>
@@ -105,6 +157,16 @@ namespace TeamBlog.Tests
                 _messageSent.Should().NotBeNull();
                 _messageSent.Should().BeOfType<PostCreatedEvent>();
             });
+        }
+
+        private void RetrieveUserFeed()
+        {
+            _actualPosts = K.Resolve<PostsController>().GetFeedPosts();
+        }
+
+        private void SubscribeToChannelA()
+        {
+            K.Resolve<ChannelSubscriptionsController>().Subscribe(ResolveChannelId(ChannelNameA));
         }
 
         private void SetupDependencies()
@@ -128,23 +190,25 @@ namespace TeamBlog.Tests
             K.OverrideWithMock<ISessionProvider>(m => m.Setup(p => p.UserId).Returns(() => user.Id));
         }
 
-        private void InsertChannel()
+        private void InsertChannel(string channelName)
         {
-            K.Resolve<ChannelsController>().AddNewChannel(new NewChannelJsondto { Name = ChannelName});
+            K.Resolve<ChannelsController>().AddNewChannel(new NewChannelJsondto { Name = channelName});
         }
 
-        private Guid ChannelId => 
-            K.Resolve<ChannelsController>().GetAll()
-                .Where(ch => ch.Name == ChannelName)
+        private Guid ResolveChannelId(string channelName)
+        {
+            return K.Resolve<ChannelsController>().GetAll()
+                .Where(ch => ch.Name == channelName)
                 .Select(ch => ch.Id)
                 .First();
+        }
 
-        private void InsertPost(string title, string content)
+        private void InsertPost(string title, string content, IEnumerable<Guid> channelIds)
         {
             var postsController = K.Resolve<PostsController>();
             postsController.AddNewPost(new NewPostJsondto
             {
-                Channels = ChannelId.AsArray(),
+                Channels = channelIds.ToArray(),
                 Content = content,
                 Title = title
             });

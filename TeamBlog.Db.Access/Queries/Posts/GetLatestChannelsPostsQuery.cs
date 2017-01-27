@@ -11,12 +11,12 @@ namespace TeamBlog.Db.Access.Queries.Posts
     public class GetLatestChannelsPostsQuery : IQuery<PostDto>
     {
         private readonly IMongoAdapter _adapter;
-        private readonly Guid[] _channelIds;
+        private readonly HashSet<Guid> _channelIds;
 
         public GetLatestChannelsPostsQuery(IMongoAdapter adapter, Guid[] channelIds)
         {
             _adapter = adapter;
-            this._channelIds = channelIds;
+            _channelIds = new HashSet<Guid>(channelIds);
         }
 
         public PostDto[] Run()
@@ -41,20 +41,10 @@ namespace TeamBlog.Db.Access.Queries.Posts
                     Url = post.Title,
                     Content = post.Content,
                     CreationDate = post.CreationDate,
-                    Channels = postChannelsTuples[post.Id].ToArray()
+                    Channels = postChannelsTuples[post.Id].Where(_channelIds.Contains).ToArray()
                 })
                 .ToArray();
         }
-
-        
-
-        //private string ResolveUserName(Post post)
-        //{
-        //    return _adapter.UserCollection
-        //        .AsQueryable()
-        //        .Single(u => u.Id == post.AuthorId)
-        //        .Name;
-        //}
     }
 
     public static class CollectionExtensions
