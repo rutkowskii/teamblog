@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
-using IdentityServer3.Core.Configuration;
 using IdentityServer3.Core.Services.InMemory;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
 using TeamBlog;
 using IdentityServer3.AccessTokenValidation;
+using IdentityServer3.Core;
+using IdentityServer3.Core.Configuration;
+using IdentityServer3.Core.Models;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 [assembly: OwinStartup(typeof(SignalRStartup))]
 
@@ -14,57 +20,47 @@ namespace TeamBlog
 {
     public class SignalRStartup
     {
-        public void Configuration(
-            IAppBuilder app)
+        public void Configuration(IAppBuilder app)
         {
             // Any connection or hub wire up and configuration should go here
             var hc = new HubConfiguration {EnableDetailedErrors = true,};
             app.MapSignalR("/signalr", hc);
 
-            ConfigureIdentityServer(app);
-            ConfigureAccess(app);
-        }
 
-        private static void ConfigureIdentityServer(
-            IAppBuilder app)
-        {
-            var options = new IdentityServerOptions
+            app.Map("/api", idsrvApp =>
             {
-                LoggingOptions = new LoggingOptions
+                idsrvApp.UseIdentityServer(new IdentityServerOptions
                 {
-                    WebApiDiagnosticsIsVerbose = true,
-                    EnableWebApiDiagnostics = true,
-                    EnableHttpLogging = true,
-                    EnableKatanaLogging= true
-                },
-                Factory = new IdentityServerServiceFactory()
-                    .UseInMemoryClients(Clients.Get())
-                    .UseInMemoryScopes(Scopes.Get())
-                    .UseInMemoryUsers(Users.Get()),
-                RequireSsl = false,
-                EnableWelcomePage = false,
-            };
+                    SiteName = "Embedded IdentityServer",
+                    SigningCertificate = LoadCertificate(),
+                    RequireSsl = false,
 
-            app.UseIdentityServer(options);
+                    Factory = new IdentityServerServiceFactory()
+                                .UseInMemoryUsers(Users.Get())
+                                .UseInMemoryClients(Clients.Get())
+                                .UseInMemoryScopes(StandardScopes.All)
+                });
+            });
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = "Cookies"
+            });
+
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
+            {
+                Authority = "https://localhost:44339/api",
+                ClientId = "mvc",
+                RedirectUri = "https://localhost:44339/",
+                ResponseType = "id_token",
+
+                SignInAsAuthenticationType = "Cookies"
+            });
         }
 
-        private void ConfigureAccess(IAppBuilder app)
+        private X509Certificate2 LoadCertificate()
         {
-            // accept access tokens from identityserver and require a scope of 'api1'
-
-            //app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
-            //{
-            //    Authority = "http://localhost:56522",
-            //    ValidationMode = ValidationMode.Both,
-            //    RequiredScopes = new[] { "api1" }
-            //});
-
-            // configure web api
-            //var config = new HttpConfiguration();
-            //config.MapHttpAttributeRoutes();
-
-            // require authentication for all controllers
-            //config.Filters.Add(new System.Web.Http.AuthorizeAttribute());
+            return new X509Certificate2($@"{AppDomain.CurrentDomain.BaseDirectory}\bin\idsrv3test.pfx", "idsrv3test");
         }
     }
 }

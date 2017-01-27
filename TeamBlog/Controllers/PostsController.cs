@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Http;
+using System.Web.Mvc;
 using TeamBlog.Jsondtos;
 using TeamBlog.Bl;
 using TeamBlog.Dtos;
@@ -26,8 +27,8 @@ namespace TeamBlog.Controllers
             _newpostDtoMapper = newpostDtoMapper;
         }
 
-        [HttpGet]
-        [Route(@"api/posts")]
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route(@"api/posts")]
         public IEnumerable<PostJsondto> GetFeedPosts()
         {
             var posts = _currentUser.GetGeneralFeedPosts();
@@ -35,8 +36,8 @@ namespace TeamBlog.Controllers
             return postsMapped;
         }
 
-        [HttpPost]
-        [Route(@"api/posts")]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route(@"api/posts")]
         public System.Net.Http.HttpResponseMessage AddNewPost([FromBody] NewPostJsondto newPost)
         {
             _currentUser.AddPost(_newpostDtoMapper.Map(newPost));
@@ -45,19 +46,13 @@ namespace TeamBlog.Controllers
         }
     }
 
-    public class DummyController : ApiController
+    public class DummyController : Controller
     {
-        [HttpGet]
-        [Route(@"api/dummy")]
-        public IHttpActionResult Get()
+        [System.Web.Mvc.Route(@"api/dummy")]
+        [System.Web.Mvc.Authorize]
+        public ActionResult About()
         {
-            var caller = User as ClaimsPrincipal;
-
-            return Json(new
-            {
-                message = "OK computer",
-                client = caller.FindFirst("client_id").Value
-            });
+            return View((User as ClaimsPrincipal).Claims);
         }
     }
 }

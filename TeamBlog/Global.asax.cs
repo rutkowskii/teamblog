@@ -64,20 +64,6 @@ namespace TeamBlog
 
     }
 
-    static class Scopes
-    {
-        public static List<Scope> Get()
-        {
-            return new List<Scope>
-        {
-            new Scope
-            {
-                Name = "api1"
-            }
-        };
-        }
-    }
-
     public static class Clients
     {
         public static IEnumerable<Client> Get()
@@ -87,18 +73,13 @@ namespace TeamBlog
             new Client
             {
                 Enabled = true,
-                ClientName = "JS Client",
-                ClientId = "js",
+                ClientName = "MVC Client",
+                ClientId = "mvc",
                 Flow = Flows.Implicit,
 
                 RedirectUris = new List<string>
                 {
-                    "http://localhost:56522"
-                },
-
-                AllowedCorsOrigins = new List<string>
-                {
-                    "http://localhost:56522"
+                    "https://localhost:44339/"
                 },
 
                 AllowAccessToAllScopes = true
@@ -122,12 +103,10 @@ namespace TeamBlog
                 Claims = new[]
                 {
                     new Claim(Constants.ClaimTypes.GivenName, "Bob"),
-                    new Claim(Constants.ClaimTypes.FamilyName, "Smith"),
-                    new Claim(Constants.ClaimTypes.Email, "bob.smith@email.com")
+                    new Claim(Constants.ClaimTypes.FamilyName, "Smith")
                 }
             }
         };
         }
     }
-
 }
