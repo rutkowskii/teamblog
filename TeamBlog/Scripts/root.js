@@ -10,7 +10,7 @@
 
 
     .controller("user-profile", [
-        "$scope", function ($scope, $mdDialog) {
+        "$scope", "$http", function ($scope, $http) {
 
             this.announceClick = function (index) {
                 console.log("FUNCTION ANNOUNCE CLICK " + index);
@@ -29,8 +29,11 @@
                  .done(function () { console.log('Now connected, connection ID=' + $.connection.hub.id); })
                  .fail(function () { console.log('Could not Connect!'); });
             
+            $http.get("api/currentUser", {}).then(function (response) {
+                $scope.login = response.data.Name;
+                $scope.apply();
+            });
 
-            $scope.login = "ANON";
             $scope.notifications = [];
             $scope.anyNotifications = true;
         }

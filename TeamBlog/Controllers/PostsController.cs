@@ -43,4 +43,30 @@ namespace TeamBlog.Controllers
             return new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK);
         }
     }
+
+    public class UsersController : ApiController
+    {
+        private readonly ISessionProvider _sessionProvider;
+        private readonly IUsersService _usersService;
+
+        public UsersController(ISessionProvider sessionProvider, IUsersService usersService)
+        {
+            _sessionProvider = sessionProvider;
+            _usersService = usersService;
+        }
+
+        [HttpGet]
+        [Route(@"api/currentUser")]
+        public UserJsondto GetCurrentUser()
+        {
+            var userId = _sessionProvider.UserId;
+            var user = _usersService.GetAll().First(u => u.Id == userId);
+            return new UserJsondto {Name = user.Name};
+        }
+    }
+
+    public class UserJsondto
+    {
+        public string Name { get; set; }
+    }
 }

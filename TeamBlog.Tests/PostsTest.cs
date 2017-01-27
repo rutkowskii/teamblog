@@ -15,6 +15,8 @@ using Xbehave;
 
 namespace TeamBlog.Tests
 {
+    // todo posts validation tests
+
     public class PostsTest : TestBase
     {
         private IEnumerable<PostJsondto> _actualPosts;

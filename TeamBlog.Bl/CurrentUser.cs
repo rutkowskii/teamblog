@@ -9,7 +9,7 @@ using TeamBlog.Dtos;
 
 namespace TeamBlog.Bl
 {
-    public class CurrentUser : IUser
+    internal class CurrentUser : IUser
     {
         private readonly IChannelSubscribeCommandBuilder _channelSubscribeCommandBuilder;
         private readonly IInsertNewPostCommandBuilder _insertNewPostCommandBuilder;
@@ -17,13 +17,15 @@ namespace TeamBlog.Bl
         private readonly IGetLatestChannelsPostsQueryBuilder _channelsPostsQueryBuilder;
         private readonly IBus _bus;
         private readonly ISessionProvider _sessionProvider;
+        private readonly NewPostDtoValidator _newPostDtoValidator;
 
         public CurrentUser(IChannelSubscribeCommandBuilder channelSubscribeCommandBuilder,
             IInsertNewPostCommandBuilder insertNewPostCommandBuilder,
             IGetUserChannelsQueryBuilder userChannelsQueryBuilder,
             IGetLatestChannelsPostsQueryBuilder channelsPostsQueryBuilder,
             IBus bus,
-            ISessionProvider sessionProvider)
+            ISessionProvider sessionProvider, 
+            NewPostDtoValidator newPostDtoValidator)
         {
             _channelSubscribeCommandBuilder = channelSubscribeCommandBuilder;
             _insertNewPostCommandBuilder = insertNewPostCommandBuilder;
@@ -31,6 +33,7 @@ namespace TeamBlog.Bl
             _channelsPostsQueryBuilder = channelsPostsQueryBuilder;
             _bus = bus;
             _sessionProvider = sessionProvider;
+            _newPostDtoValidator = newPostDtoValidator;
         }
 
         public PostDto[] GetGeneralFeedPosts()
@@ -47,6 +50,7 @@ namespace TeamBlog.Bl
 
         public void AddPost(NewPostDto newPostDto)
         {
+            _newPostDtoValidator.ThrowIfInvalid(newPostDto);
             var cmd = _insertNewPostCommandBuilder
                 .Build(BuildInsertNewPostParams(newPostDto));
             var result = cmd.Run();
