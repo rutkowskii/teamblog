@@ -1,4 +1,4 @@
-﻿angular.module('teamblog', ['ngMaterial'])
+﻿angular.module('teamblog', ['ngMaterial', 'ngRoute'])
 
     .config(function ($mdThemingProvider) {
         $mdThemingProvider
@@ -10,13 +10,18 @@
 
 
     .controller("user-profile", [
-        "$scope", "$http", function ($scope, $http) {
+        "$scope", "$http", "$route", function ($scope, $http, $route) {
 
             this.announceClick = function (index) {
                 console.log("FUNCTION ANNOUNCE CLICK " + index);
             };
 
             $scope.notfsCount = 0;
+            this.toggleUser = function() {
+                $http.post("api/toggle").then(function(response) {
+                    $route.reload();
+                });
+            }
 
             var signalrProxy = $.connection.notificationsHub;
             signalrProxy.client.receiveNotifications = function (notfsCount) {

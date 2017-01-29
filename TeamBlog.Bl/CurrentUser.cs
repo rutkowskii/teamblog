@@ -6,6 +6,7 @@ using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries.Posts;
 using TeamBlog.Db.Access.Queries.Subscriptions;
 using TeamBlog.Dtos;
+using TeamBlog.Services.Sessions;
 
 namespace TeamBlog.Bl
 {

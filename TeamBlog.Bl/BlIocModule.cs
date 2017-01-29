@@ -1,4 +1,5 @@
-﻿using TeamBlog.Utils;
+﻿using TeamBlog.Services.Sessions;
+using TeamBlog.Utils;
 
 namespace TeamBlog.Bl
 {
@@ -10,6 +11,7 @@ namespace TeamBlog.Bl
            BindTransient<IChannelsService, ChannelsService>();
            BindTransient<IUsersService, UsersService>();
            BindTransient<ISessionProvider, SessionProvider>();
+           BindSingleton<FakeSessionContainer>();
         }
     }
 }

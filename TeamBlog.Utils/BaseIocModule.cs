@@ -15,6 +15,11 @@ namespace TeamBlog.Utils
             Bind<T1>().To<T2>().InSingletonScope();
         }
 
+        public void BindSingleton<T1>()
+        {
+            Bind<T1>().To<T1>().InSingletonScope();
+        }
+
         public void BindFactory<T>() where T : class
         {
             Bind<T>().ToFactory(() => new TypeMatchingArgumentInheritanceInstanceProvider());

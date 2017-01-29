@@ -1,6 +1,6 @@
 using System;
 
-namespace TeamBlog.Bl
+namespace TeamBlog.Services.Sessions
 {
     public interface ISessionProvider
     {

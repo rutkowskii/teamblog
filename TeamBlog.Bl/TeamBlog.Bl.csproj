@@ -55,13 +55,14 @@
     <Compile Include="BlIocModule.cs" />
     <Compile Include="ChannelsService.cs" />
     <Compile Include="IChannelsService.cs" />
-    <Compile Include="ISessionProvider.cs" />
     <Compile Include="IUser.cs" />
     <Compile Include="IUserFactory.cs" />
     <Compile Include="CurrentUser.cs" />
     <Compile Include="NewPostDtoValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionProvider.cs" />
+    <Compile Include="Sessions\FakeSessionContainer.cs" />
+    <Compile Include="Sessions\ISessionProvider.cs" />
+    <Compile Include="Sessions\SessionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBlog.Bus\TeamBlog.Bus.csproj">
