@@ -50,7 +50,8 @@ namespace TeamBlog.Db.Access.Commands.Posts
 
             return new InsertNewPostCommandResult
             {
-                NewPostId = newPostId
+                NewPostId = newPostId,
+                InsertionTime = insertionTime
             };
         }
     }

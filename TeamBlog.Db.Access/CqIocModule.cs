@@ -1,5 +1,6 @@
 ﻿using TeamBlog.Db.Access.Commands;
 using TeamBlog.Db.Access.Commands.Channels;
+using TeamBlog.Db.Access.Commands.Notifications;
 using TeamBlog.Db.Access.Commands.Posts;
 using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries;
@@ -26,7 +27,7 @@ namespace TeamBlog.Db.Access
             BindFactory<IChannelsQueryBuilder>();
             BindFactory<IAddInsertPostNotificationCommandBuilder>();
 
-            BindFactory<IGetChannelSubscribersQueryBuilder>();
+            BindFactory<IGetChannelsSubscribersQueryBuilder>();
             BindFactory<IGetUserChannelsQueryBuilder>();
             BindFactory<IGetLatestChannelsPostsQueryBuilder>();
             BindFactory<IAddUserCommandBuilder>();

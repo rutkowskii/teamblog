@@ -6,5 +6,6 @@ namespace TeamBlog.Db.Access.Commands.Posts
     {
         public Guid NewPostId { get; set; }
         public string OurUrl { get; set; }
+        public DateTime InsertionTime { get; set; }
     }
 }

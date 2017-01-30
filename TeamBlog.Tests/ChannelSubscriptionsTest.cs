@@ -5,6 +5,7 @@ using FluentAssertions;
 using StackExchange.Redis;
 using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries.Subscriptions;
+using TeamBlog.Utils;
 using Xbehave;
 
 namespace TeamBlog.Tests
@@ -91,8 +92,8 @@ namespace TeamBlog.Tests
             IEnumerable<Guid> expected)
         {
             var actualSubscribers = K
-                .Resolve<IGetChannelSubscribersQueryBuilder>()
-                .Build(_channelId)
+                .Resolve<IGetChannelsSubscribersQueryBuilder>()
+                .Build(_channelId.AsArray())
                 .Run();
             actualSubscribers.Should().BeEquivalentTo(expected);
         }

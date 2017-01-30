@@ -1,45 +1,60 @@
-﻿using System;
-using StackExchange.Redis;
-using TeamBlog.Db.Access.Queries;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TeamBlog.Db.Access.Queries.Subscriptions;
-using TeamBlog.Dtos;
 using TeamBlog.Model;
 using TeamBlog.RedisAccess;
 using TeamBlog.RedisAccess.Collections.Hash;
 using TeamBlog.RedisAccess.Collections.SortedSet;
+using TeamBlog.Utils;
 
-namespace TeamBlog.Db.Access.Commands
+namespace TeamBlog.Db.Access.Commands.Notifications
 {
     public class AddInsertPostNotificationCommand
     {
-        private readonly PostAddedDto _postAddedDto;
-        private readonly PostAddedUserNotificationBuilder _notificationBuilder;
-        private readonly IGetChannelSubscribersQueryBuilder _getChannelSubscribersQueryBuilder;
+        private readonly AddInsertPostNotificationCommandParams _params;
+        private readonly IGetChannelsSubscribersQueryBuilder _getChannelsSubscribersQueryBuilder;
         private readonly SortedSetWriterBuilder _sortedSetWriterBuilder;
         private readonly HashWriterBuilder<PostAddedUserNotification> _hashWriterBuilder;
 
-        public AddInsertPostNotificationCommand(PostAddedDto postAddedDto,
-            PostAddedUserNotificationBuilder notificationBuilder,
-            IGetChannelSubscribersQueryBuilder getChannelSubscribersQueryBuilder,
+        public AddInsertPostNotificationCommand(AddInsertPostNotificationCommandParams @params,
+            IGetChannelsSubscribersQueryBuilder getChannelsSubscribersQueryBuilder,
             SortedSetWriterBuilder sortedSetWriterBuilder, HashWriterBuilder<PostAddedUserNotification> hashWriterBuilder)
         {
-            _postAddedDto = postAddedDto;
-            _notificationBuilder = notificationBuilder;
-            _getChannelSubscribersQueryBuilder = getChannelSubscribersQueryBuilder;
+            _params = @params;
+            _getChannelsSubscribersQueryBuilder = getChannelsSubscribersQueryBuilder;
             _sortedSetWriterBuilder = sortedSetWriterBuilder;
             _hashWriterBuilder = hashWriterBuilder;
         }
 
         public void Run()
         {
-            var subscribers = _getChannelSubscribersQueryBuilder.Build(_postAddedDto.ChannelId).Run();
-            var dbNotification = _notificationBuilder.Build(_postAddedDto);
-            InsertNotification(dbNotification);
+            var subscribers = ResolveSubscribers();
 
-            foreach (var subscriber in subscribers)
+            var dbNotification = InsertNotificationToDb();
+
+            subscribers.ForEach(subscriber => AddNotificationForUser(subscriber, dbNotification));
+        }
+
+        private IEnumerable<Guid> ResolveSubscribers()
+        {
+            var subscribers = _getChannelsSubscribersQueryBuilder
+                .Build(_params.ChannelIds)
+                .Run()
+                .Except(_params.AuthorId.AsArray());
+            return subscribers;
+        }
+
+        private PostAddedUserNotification InsertNotificationToDb()
+        {
+            var dbNotification = new PostAddedUserNotification
             {
-                AddNotificationForUser(subscriber, dbNotification);
-            }
+                Content = "New post in your channel",
+                Id = Guid.NewGuid(),
+                Timestamp = _params.Timestamp
+            };
+            InsertNotification(dbNotification);
+            return dbNotification;
         }
 
         private void AddNotificationForUser(Guid subscriber, PostAddedUserNotification newNotification)

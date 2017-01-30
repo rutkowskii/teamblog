@@ -10,16 +10,16 @@
 
 
     .controller("user-profile", [
-        "$scope", "$http", "$route", function ($scope, $http, $route) {
+        "$scope", "$http", "$window", function ($scope, $http, $window) {
 
             this.announceClick = function (index) {
                 console.log("FUNCTION ANNOUNCE CLICK " + index);
             };
 
             $scope.notfsCount = 0;
-            this.toggleUser = function() {
+            $scope.toggleUser = function () {
                 $http.post("api/toggle").then(function(response) {
-                    $route.reload();
+                    $window.location.reload();
                 });
             }
 
@@ -36,7 +36,6 @@
             
             $http.get("api/currentUser", {}).then(function (response) {
                 $scope.login = response.data.Name;
-                $scope.apply();
             });
 
             $scope.notifications = [];
@@ -58,7 +57,6 @@
             });
         }
     ])
-
     
     .controller("new-posts", [
         "$scope", "$mdDialog", "$http", "$mdToast", function ($scope, $mdDialog, $http, $mdToast) {

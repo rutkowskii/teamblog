@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MongoDB.Driver;
 using StackExchange.Redis;
 using TeamBlog.Model;
-using TeamBlog.MongoAccess;
 using TeamBlog.RedisAccess;
 using TeamBlog.RedisAccess.Collections.Hash;
 using TeamBlog.RedisAccess.Collections.SortedSet;
@@ -12,27 +10,6 @@ using TeamBlog.Utils;
 
 namespace TeamBlog.Db.Access.Queries
 {
-    public class UserDto
-    {
-        public string Name { get; set; }
-        public Guid Id { get; set; }
-    }
-
-    public class GetUsersQuery : IQuery<UserDto>
-    {
-        private readonly IMongoAdapter _mongoAdapter;
-
-        public GetUsersQuery(IMongoAdapter mongoAdapter)
-        {
-            _mongoAdapter = mongoAdapter;
-        }
-
-        public UserDto[] Run()
-        {
-            return _mongoAdapter.UserCollection.AsQueryable().Select(u => new UserDto {Id = u.Id, Name = u.Name}).ToArray();
-        }
-    }
-
     public class GetUserNotificationsQuery : IQuery<PostAddedUserNotification>
     {
         private readonly HashReaderBuilder<PostAddedUserNotification> _hashReaderBuilder;

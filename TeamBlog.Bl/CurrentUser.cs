@@ -52,11 +52,25 @@ namespace TeamBlog.Bl
         public void AddPost(NewPostDto newPostDto)
         {
             _newPostDtoValidator.ThrowIfInvalid(newPostDto);
-            var cmd = _insertNewPostCommandBuilder
-                .Build(BuildInsertNewPostParams(newPostDto));
-            var result = cmd.Run();
+            var result = InsertPostIntoDb(newPostDto);
+            PublishNotification(newPostDto, result);
+        }
 
-            _bus.Publish(new PostCreatedEvent {ChannelIds = newPostDto.Channels});
+        private InsertNewPostCommandResult InsertPostIntoDb(NewPostDto newPostDto)
+        {
+            var cmd = _insertNewPostCommandBuilder.Build(BuildInsertNewPostParams(newPostDto));
+            var result = cmd.Run();
+            return result;
+        }
+
+        private void PublishNotification(NewPostDto newPostDto, InsertNewPostCommandResult result)
+        {
+            _bus.Publish(new PostCreatedEvent
+            {
+                ChannelIds = newPostDto.Channels.ToArray(),
+                AuthorId = CurrentUserId,
+                Timestamp = result.InsertionTime
+            });
         }
 
         private InsertNewPostParams BuildInsertNewPostParams(NewPostDto newPostDto)

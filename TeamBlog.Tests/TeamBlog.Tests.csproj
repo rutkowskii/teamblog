@@ -70,6 +70,10 @@
       <HintPath>..\packages\AutoFixture.3.42.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ploeh.SemanticComparison, Version=3.50.2.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SemanticComparison.3.50.2\lib\net40\Ploeh.SemanticComparison.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
@@ -119,6 +123,7 @@
     <Compile Include="ChannelSubscriptionsTest.cs" />
     <Compile Include="PostNotificationsTests.cs" />
     <Compile Include="PostsTest.cs" />
+    <Compile Include="PostValidationTests.cs" />
     <Compile Include="TestKernel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
@@ -126,8 +131,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Scripts\jquery-3.1.1.min.map" />
-    <None Include="Scripts\jquery-3.1.1.slim.min.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBlog.Bus\TeamBlog.Bus.csproj">
@@ -150,6 +153,10 @@
       <Project>{BC4AC5AF-0964-4E59-A8DF-86DBFE855E7B}</Project>
       <Name>TeamBlog.MongoAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.NotificationsCreator\TeamBlog.NotificationsCreator.csproj">
+      <Project>{A2E38AD3-0842-496C-967A-1A3DF644EB73}</Project>
+      <Name>TeamBlog.NotificationsCreator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeamBlog.RedisAccess\TeamBlog.RedisAccess.csproj">
       <Project>{D6DF241E-6C1E-44F1-8D97-6ADF9ADE7F2C}</Project>
       <Name>TeamBlog.RedisAccess</Name>
@@ -166,13 +173,6 @@
       <Project>{A42B5D9C-E988-4216-9C2C-DDF2B744A39E}</Project>
       <Name>TeamBlog</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,20 +4,20 @@ using System.Linq;
 using FluentAssertions;
 using MongoDB.Driver;
 using Moq;
-using TeamBlog.Bl;
+using Ploeh.SemanticComparison.Fluent;
 using TeamBlog.Bus;
 using TeamBlog.Controllers;
 using TeamBlog.Db.Access.Commands;
 using TeamBlog.Jsondtos;
+using TeamBlog.Model;
 using TeamBlog.MongoAccess;
 using TeamBlog.Services.Sessions;
+using TeamBlog.Utils;
 using TeamBlog.Utils.Datetime;
 using Xbehave;
 
 namespace TeamBlog.Tests
 {
-    // todo posts validation tests
-
     public class PostsTest : TestBase
     {
         private IEnumerable<PostJsondto> _actualPosts;
@@ -27,6 +27,7 @@ namespace TeamBlog.Tests
         private const string ChannelNameB = "serious-channel";
         private readonly DateTime _mockedNow = new DateTime(2015, 05, 23, 3, 23, 11);
         private readonly string _userName = "Jan Kowalski";
+        private Guid _currentUserId;
 
         [Scenario]
         public void PostsRetrieval()
@@ -155,10 +156,20 @@ namespace TeamBlog.Tests
                 InsertPost(title: "abc", content: "aaa", channelIds: new[] {ResolveChannelId(ChannelNameA)});
             });
 
-            "THEN a notification should be created".x(() =>
+            "THEN a proper notification should be created".x(() =>
             {
                 _messageSent.Should().NotBeNull();
                 _messageSent.Should().BeOfType<PostCreatedEvent>();
+                var expectedEvent = new PostCreatedEvent
+                {
+                    ChannelIds = ResolveChannelId(ChannelNameA).AsArray(),
+                    AuthorId = _currentUserId,
+                    Timestamp = _mockedNow
+                };
+                _messageSent.As<PostCreatedEvent>()
+                    .AsSource().OfLikeness<PostCreatedEvent>()
+                    .With(x => x.ChannelIds).EqualsWhen((x,y) => x.ChannelIds.SequenceEqual(y.ChannelIds))
+                    .ShouldEqual(expectedEvent);
             });
         }
 
@@ -181,7 +192,7 @@ namespace TeamBlog.Tests
 
             InsertUserAndSetupSessionProvider();
 
-            K.Override<IBus>(_busMock.Object);
+            K.Override(_busMock.Object);
 
             K.OverrideWithMock<IDateTimeProvider>(m => m.Setup(p => p.UtcNow).Returns(() => _mockedNow));
         }
@@ -189,8 +200,8 @@ namespace TeamBlog.Tests
         private void InsertUserAndSetupSessionProvider()
         {
             K.Resolve<IAddUserCommandBuilder>().Build(_userName).Run();
-            var user = K.Resolve<IMongoAdapter>().UserCollection.AsQueryable().First();
-            K.OverrideWithMock<ISessionProvider>(m => m.Setup(p => p.UserId).Returns(() => user.Id));
+            _currentUserId = K.Resolve<IMongoAdapter>().UserCollection.AsQueryable().First().Id;
+            K.OverrideWithMock<ISessionProvider>(m => m.Setup(p => p.UserId).Returns(() => _currentUserId));
         }
 
         private void InsertChannel(string channelName)

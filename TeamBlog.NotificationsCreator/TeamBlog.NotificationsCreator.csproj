@@ -83,6 +83,10 @@
       <Project>{D6DF241E-6C1E-44F1-8D97-6ADF9ADE7F2C}</Project>
       <Name>TeamBlog.RedisAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamBlog.Utils\TeamBlog.Utils.csproj">
+      <Project>{51B647D2-70E8-4CE8-9698-E1529FF0BF2D}</Project>
+      <Name>TeamBlog.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

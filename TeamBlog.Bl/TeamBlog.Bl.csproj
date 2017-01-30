@@ -58,11 +58,13 @@
     <Compile Include="IUser.cs" />
     <Compile Include="IUserFactory.cs" />
     <Compile Include="CurrentUser.cs" />
+    <Compile Include="IUsersService.cs" />
     <Compile Include="NewPostDtoValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sessions\FakeSessionContainer.cs" />
     <Compile Include="Sessions\ISessionProvider.cs" />
     <Compile Include="Sessions\SessionProvider.cs" />
+    <Compile Include="UsersService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBlog.Bus\TeamBlog.Bus.csproj">

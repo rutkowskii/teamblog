@@ -6,8 +6,8 @@ namespace TeamBlog.Tests
 
         public TestBase()
         {
-            this.K = new TestKernel();
-            this.K.Flush();
+            K = new TestKernel();
+            K.Flush();
         }
     }
 }

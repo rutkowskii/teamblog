@@ -21,7 +21,7 @@ namespace TeamBlog
             RunServices();
         }
 
-        private void InsertFakes() //todo tmp
+        private void InsertFakes() // this is tmp
         {
             new FakesDbSeeder().InsertFakes();
         }

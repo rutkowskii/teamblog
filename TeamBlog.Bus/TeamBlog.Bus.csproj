@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusIocModule.cs" />
     <Compile Include="IBus.cs" />
     <Compile Include="IMessage.cs" />
-    <Compile Include="PostAddedBusMsg.cs" />
+    <Compile Include="MockBus.cs" />
+    <Compile Include="PostCreatedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

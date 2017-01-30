@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Ploeh.AutoFixture;
-using TeamBlog.Db.Access.Commands;
+using TeamBlog.Bus;
 using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries;
-using TeamBlog.Dtos;
 using TeamBlog.Model;
+using TeamBlog.NotificationsCreator;
 using TeamBlog.Utils;
 using Xbehave;
 
@@ -130,14 +130,11 @@ namespace TeamBlog.Tests
 
         private void InsertNotificationForChannel1(DateTime timestamp)
         {
-            var postAddedDto = new Fixture().Build<PostAddedDto>()
+            var postAddedEvent = new Fixture().Build<PostCreatedEvent>()
                 .With(p => p.Timestamp, timestamp)
-                .With(p => p.ChannelId, ChannelId)
+                .With(p => p.ChannelIds, ChannelId.AsArray())
                 .Create();
-            var cmdBuilder = K.Resolve<IAddInsertPostNotificationCommandBuilder>();
-            cmdBuilder
-                .Build(postAddedDto)
-                .Run();
+            K.Resolve<PostCreatedEventHandler>().Handle(postAddedEvent);
         }
 
         private void SubscribeUsersToChannel()
