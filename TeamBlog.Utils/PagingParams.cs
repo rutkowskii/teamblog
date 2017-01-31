@@ -6,14 +6,8 @@ namespace TeamBlog.Utils
         public int Index { get; set; }
         public int Count { get; set; }
 
-        public static PagingParams All
-        {
-            get { return new PagingParams {Count = TakeAllIndicator, Index = TakeAllIndicator}; }
-        }
+        public static PagingParams All => new PagingParams {Count = TakeAllIndicator, Index = TakeAllIndicator};
 
-        public bool TakesAll
-        {
-            get { return Count == TakeAllIndicator && Index == TakeAllIndicator; }
-        }
+        public bool TakesAll => Count == TakeAllIndicator && Index == TakeAllIndicator;
     }
 }

@@ -4,10 +4,12 @@ using System.Linq;
 using FluentAssertions;
 using Ploeh.AutoFixture;
 using TeamBlog.Bus;
+using TeamBlog.Controllers;
 using TeamBlog.Db.Access.Commands.Subscriptions;
 using TeamBlog.Db.Access.Queries;
-using TeamBlog.Model;
+using TeamBlog.Jsondtos;
 using TeamBlog.NotificationsCreator;
+using TeamBlog.Services.Sessions;
 using TeamBlog.Utils;
 using Xbehave;
 
@@ -30,7 +32,7 @@ namespace TeamBlog.Tests
             "WHEN no notifications have been added, THEN it should return no notifications".x(() =>
             {
                 var queryBuilder = K.Resolve<GetUserNotificationsQueryBuilder>();
-                var actual = queryBuilder.Build(Subscriber1).Run();
+                var actual = GetNotificationsForUser(Subscriber1);
                 actual.Should().HaveCount(0);
             });
         }
@@ -62,7 +64,7 @@ namespace TeamBlog.Tests
                 InsertNotificationForChannel1(new DateTime(2010, 1, 1, 17, 0, 0));
             });
 
-            IEnumerable<PostAddedUserNotification> actual = null;
+            IEnumerable<UserNotificationJsondto> actual = null;
             "WHEN querying for notifications top element".x(() =>
             {
                 var pagingParams = new PagingParams { Count = 1, Index = 0 };
@@ -85,7 +87,7 @@ namespace TeamBlog.Tests
                 InsertNotificationForChannel1(new DateTime(2010, 1, 1, 17, 0, 0));
             });
 
-            IEnumerable<PostAddedUserNotification> actual = null;
+            IEnumerable<UserNotificationJsondto> actual = null;
             "WHEN querying for notifications second element".x(() =>
             {
                 var pagingParams = new PagingParams { Count = 1, Index = 1 };
@@ -112,12 +114,11 @@ namespace TeamBlog.Tests
                 InsertNotificationForChannel1(new DateTime(2010, 1, 1, 21, 0, 0));
             });
 
-            PostAddedUserNotification[] actual = null;
+            UserNotificationJsondto[] actual = null;
             "WHEN querying for many notifications".x(() =>
             {
                 var pagingParams = new PagingParams { Count = 3, Index = 2 };
-                actual = GetNotificationsForUser(Subscriber1, pagingParams)
-                    .ToArray();
+                actual = GetNotificationsForUser(Subscriber1, pagingParams).ToArray();
             });
 
             "THEN the results should be ordered by time desc".x(() =>
@@ -144,18 +145,23 @@ namespace TeamBlog.Tests
             subscribeCmdBuilder.Build(new ChannelSubscribeParams(ChannelId, Subscriber2)).Run();
         }
 
-        private IEnumerable<PostAddedUserNotification> GetNotificationsForUser(Guid userId)
+        private IEnumerable<UserNotificationJsondto> GetNotificationsForUser(Guid userId)
         {
-            var queryBuilder = K.Resolve<GetUserNotificationsQueryBuilder>();
-            var actualSubscriber1 = queryBuilder.Build(userId).Run();
-            return actualSubscriber1;
+            SetupCurrentUser(userId);
+            var notifications = K.Resolve<UserNotificationsController>().GetAll();
+            return notifications;
         }
 
-        private IEnumerable<PostAddedUserNotification> GetNotificationsForUser(Guid userId, PagingParams pagingParams)
+        private void SetupCurrentUser(Guid userId)
         {
-            var queryBuilder = K.Resolve<GetUserNotificationsQueryBuilder>();
-            var actualSubscriber1 = queryBuilder.Build(pagingParams, userId).Run();
-            return actualSubscriber1;
+            K.OverrideWithMock<ISessionProvider>(m => m.Setup(p => p.UserId).Returns(userId));
+        }
+
+        private IEnumerable<UserNotificationJsondto> GetNotificationsForUser(Guid userId, PagingParams pagingParams)
+        {
+            SetupCurrentUser(userId);
+            var notifications = K.Resolve<UserNotificationsController>().Get(pagingParams);
+            return notifications;
         }
     }
 }

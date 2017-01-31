@@ -24,18 +24,22 @@ namespace TeamBlog.NotificationsCreator
     {
         private readonly IAddInsertPostNotificationCommandBuilder _builder;
         private readonly BaseMapper<PostCreatedEvent, AddInsertPostNotificationCommandParams> _mapper;
+        private readonly IBus _bus;
 
         public PostCreatedEventHandler(IAddInsertPostNotificationCommandBuilder builder,
-            BaseMapper<PostCreatedEvent, AddInsertPostNotificationCommandParams> mapper)
+            BaseMapper<PostCreatedEvent, AddInsertPostNotificationCommandParams> mapper,
+            IBus bus)
         {
             _builder = builder;
             _mapper = mapper;
+            _bus = bus;
         }
 
         public void Handle(PostCreatedEvent ev)
         {
             var cmd = _builder.Build(_mapper.Map(ev));
-            cmd.Run();
+            var users = cmd.Run();
+            _bus.Publish(new NotificationsCreatedEvent {UserIds = users});
         }
     }
 }

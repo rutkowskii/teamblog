@@ -28,7 +28,7 @@ namespace TeamBlog
 
         private void RunServices()
         {
-            var backgroundTask = new BackgroundServerTimeTimer();
+            var backgroundTask = new SignalrHubsController();
         }
     }
 }

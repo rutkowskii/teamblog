@@ -8,4 +8,9 @@ namespace TeamBlog.Bus
         public Guid AuthorId { get; set; }
         public DateTime Timestamp { get; set; }
     }
+
+    public class NotificationsCreatedEvent : IMessage
+    {
+        public Guid[] UserIds { get; set; }
+    }
 }

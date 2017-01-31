@@ -27,21 +27,25 @@ namespace TeamBlog.Db.Access.Commands.Notifications
             _hashWriterBuilder = hashWriterBuilder;
         }
 
-        public void Run()
+        // returns subscribers ids. 
+        public Guid[] Run()
         {
             var subscribers = ResolveSubscribers();
 
             var dbNotification = InsertNotificationToDb();
 
             subscribers.ForEach(subscriber => AddNotificationForUser(subscriber, dbNotification));
+
+            return subscribers;
         }
 
-        private IEnumerable<Guid> ResolveSubscribers()
+        private Guid[] ResolveSubscribers()
         {
             var subscribers = _getChannelsSubscribersQueryBuilder
                 .Build(_params.ChannelIds)
                 .Run()
-                .Except(_params.AuthorId.AsArray());
+                .Except(_params.AuthorId.AsArray())
+                .ToArray();
             return subscribers;
         }
 
