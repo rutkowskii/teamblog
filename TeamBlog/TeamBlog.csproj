@@ -249,7 +249,10 @@
     <Content Include="Scripts\jquery\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery-signalr\jquery.signalR-2.2.1.js" />
     <Content Include="Scripts\jquery-signalr\jquery.signalR-2.2.1.min.js" />
+    <Content Include="Scripts\new-posts-controller.js" />
+    <Content Include="Scripts\posts-controller.js" />
     <Content Include="Scripts\root.js" />
+    <Content Include="Scripts\user-profile-controller.js" />
     <Content Include="Styles\main.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
